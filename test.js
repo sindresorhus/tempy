@@ -13,7 +13,7 @@ test('.directory()', t => {
 });
 
 test('.directoryAsync()', async t => {
-	t.true((await m.directory()).includes(tmpdir()));
+	t.true((await m.directoryAsync()).includes(tmpdir()));
 });
 
 test('.root', t => {
