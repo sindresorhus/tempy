@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save tempy
+$ npm install tempy
 ```
 
 

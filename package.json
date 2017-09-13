@@ -1,47 +1,47 @@
 {
-  "name": "tempy",
-  "version": "0.1.0",
-  "description": "Get a random temporary file or directory path",
-  "license": "MIT",
-  "repository": "sindresorhus/tempy",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "temp",
-    "tmp",
-    "temporary",
-    "path",
-    "file",
-    "directory",
-    "dir",
-    "folder",
-    "tempfile",
-    "tempdir",
-    "tmpdir",
-    "tmpfile",
-    "random",
-    "rand",
-    "unique",
-    "uniq"
-  ],
-  "dependencies": {
-    "temp-dir": "^1.0.0",
-    "unique-string": "^1.0.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "xo": "*"
-  }
+	"name": "tempy",
+	"version": "0.1.0",
+	"description": "Get a random temporary file or directory path",
+	"license": "MIT",
+	"repository": "sindresorhus/tempy",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"temp",
+		"tmp",
+		"temporary",
+		"path",
+		"file",
+		"directory",
+		"dir",
+		"folder",
+		"tempfile",
+		"tempdir",
+		"tmpdir",
+		"tmpfile",
+		"random",
+		"rand",
+		"unique",
+		"uniq"
+	],
+	"dependencies": {
+		"temp-dir": "^1.0.0",
+		"unique-string": "^1.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"xo": "*"
+	}
 }
