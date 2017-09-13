@@ -14,6 +14,14 @@ module.exports.file = opts => {
 		extension: ''
 	}, opts);
 
+	if (opts.name) {
+		if (opts.extension) {
+			throw new Error('The `name` and `extension` options are mutually exclusive');
+		}
+
+		return path.join(module.exports.directory(), opts.name);
+	}
+
 	return getPath() + (opts.extension ? `.${opts.extension.replace(/^\./, '')}` : '');
 };
 
