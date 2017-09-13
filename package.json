@@ -37,7 +37,6 @@
     "uniq"
   ],
   "dependencies": {
-    "pify": "^2.3.0",
     "temp-dir": "^1.0.0",
     "unique-string": "^1.0.0"
   },

@@ -57,12 +57,6 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
-### tempy.directoryAsync()
-
-Get a `Promise` for a temporary directory path.
-
-**You most likely don't need this.** This is only useful if you use it in a highly concurrent server where even the tiniest blocking operation is a problem. For everything else, use `tempy.directory()`, which will be faster in most cases.
-
 ### tempy.root
 
 The root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`

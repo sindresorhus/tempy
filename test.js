@@ -13,10 +13,6 @@ test('.directory()', t => {
 	t.true(m.directory().includes(tmpdir()));
 });
 
-test('.directoryAsync()', async t => {
-	t.true((await m.directoryAsync()).includes(tmpdir()));
-});
-
 test('.root', t => {
 	t.true(m.root.length > 0);
 	t.true(path.isAbsolute(m.root));
