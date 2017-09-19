@@ -16,4 +16,7 @@ test('.directory()', t => {
 test('.root', t => {
 	t.true(m.root.length > 0);
 	t.true(path.isAbsolute(m.root));
+	t.throws(() => {
+		m.root = 'foo';
+	});
 });

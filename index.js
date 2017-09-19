@@ -28,4 +28,8 @@ module.exports.directory = () => {
 	return dir;
 };
 
-module.exports.root = tempDir;
+Object.defineProperty(module.exports, 'root', {
+	get() {
+		return tempDir;
+	}
+});

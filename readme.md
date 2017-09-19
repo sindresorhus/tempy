@@ -59,7 +59,7 @@ Get a temporary directory path. The directory is created for you.
 
 ### tempy.root
 
-The root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
+Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
 
 
 ## FAQ
