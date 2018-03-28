@@ -66,7 +66,7 @@ Get the root temporary directory path. For example: `/private/var/folders/3x/jf5
 
 ### Why doesn't it have a cleanup method?
 
-The operating system will clean up when needed. No point in us wasting resources and adding complexity.
+Temp files will be periodically cleaned up on Mac OS. If you're generating a lot of tmp files, it's recommended to use a complementary module like [rimraf](https://github.com/isaacs/rimraf) for cleanup.
 
 
 ## Related
