@@ -6,6 +6,8 @@ import m from '.';
 test('.file()', t => {
 	t.true(m.file().includes(tmpdir()));
 	t.true(m.file({extension: 'png'}).endsWith('.png'));
+	t.true(m.file({extension: '.png'}).endsWith('.png'));
+	t.false(m.file({extension: '.png'}).endsWith('..png'));
 	t.true(m.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
 });
 
