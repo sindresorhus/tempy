@@ -1,6 +1,6 @@
 'use strict';
-const fs = require('fs');
 const path = require('path');
+const mkdirp = require('mkdirp');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 
@@ -22,9 +22,13 @@ module.exports.file = opts => {
 	return getPath() + '.' + opts.extension.replace(/^\./, '');
 };
 
-module.exports.directory = () => {
-	const dir = getPath();
-	fs.mkdirSync(dir);
+module.exports.directory = opts => {
+	opts = Object.assign({
+		prefix: ''
+	}, opts);
+
+	const dir = path.join(tempDir, opts.prefix + uniqueString());
+	mkdirp.sync(dir);
 	return dir;
 };
 

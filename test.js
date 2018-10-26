@@ -1,6 +1,7 @@
 import path from 'path';
 import {tmpdir} from 'os';
 import test from 'ava';
+import uniqueString from 'unique-string';
 import tempy from '.';
 
 test('.file()', t => {
@@ -12,7 +13,11 @@ test('.file()', t => {
 });
 
 test('.directory()', t => {
+	const subDir = uniqueString();
+
 	t.true(tempy.directory().includes(tmpdir()));
+	t.true(tempy.directory({prefix: 'custom'}).includes('custom'));
+	t.true(tempy.directory({prefix: subDir + '\\'}).includes(subDir));
 });
 
 test('.root', t => {
