@@ -19,7 +19,7 @@ module.exports.file = opts => {
 		return path.join(module.exports.directory(), opts.name);
 	}
 
-	return getPath() + `.${opts.extension.replace(/^\./, '')}`;
+	return getPath() + '.' + opts.extension.replace(/^\./, '');
 };
 
 module.exports.directory = () => {
