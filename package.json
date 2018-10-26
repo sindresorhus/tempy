@@ -35,6 +35,7 @@
 		"uniq"
 	],
 	"dependencies": {
+		"mkdirp": "^0.5.1",
 		"temp-dir": "^1.0.0",
 		"unique-string": "^1.0.0"
 	},
