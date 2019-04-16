@@ -1,6 +1,7 @@
 import {expectType, expectError} from 'tsd';
-import * as tempy from '.';
+import tempy = require('.');
 
+const options: tempy.Options = {};
 expectType<string>(tempy.directory());
 expectType<string>(tempy.file());
 expectType<string>(tempy.file({extension: 'png'}));
