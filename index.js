@@ -7,9 +7,10 @@ const tempDir = require('temp-dir');
 const getPath = () => path.join(tempDir, uniqueString());
 
 module.exports.file = options => {
-	options = Object.assign({
-		extension: ''
-	}, options);
+	options = {
+		extension: '',
+		...options
+	};
 
 	if (options.name) {
 		if (options.extension) {
@@ -23,9 +24,9 @@ module.exports.file = options => {
 };
 
 module.exports.directory = () => {
-	const dir = getPath();
-	fs.mkdirSync(dir);
-	return dir;
+	const directory = getPath();
+	fs.mkdirSync(directory);
+	return directory;
 };
 
 Object.defineProperty(module.exports, 'root', {
