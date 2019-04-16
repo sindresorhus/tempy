@@ -6,20 +6,20 @@ const tempDir = require('temp-dir');
 
 const getPath = () => path.join(tempDir, uniqueString());
 
-module.exports.file = opts => {
-	opts = Object.assign({
+module.exports.file = options => {
+	options = Object.assign({
 		extension: ''
-	}, opts);
+	}, options);
 
-	if (opts.name) {
-		if (opts.extension) {
+	if (options.name) {
+		if (options.extension) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(module.exports.directory(), opts.name);
+		return path.join(module.exports.directory(), options.name);
 	}
 
-	return getPath() + '.' + opts.extension.replace(/^\./, '');
+	return getPath() + '.' + options.extension.replace(/^\./, '');
 };
 
 module.exports.directory = () => {
