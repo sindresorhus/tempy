@@ -3,8 +3,16 @@ const fs = require('fs');
 const path = require('path');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
+const del = require('del');
 
-const getPath = () => path.join(tempDir, uniqueString());
+const cacheDirectories = [];
+
+const getPath = () => {
+	const directory = path.join(tempDir, uniqueString());
+	fs.mkdirSync(directory);
+	cacheDirectories.push(directory);
+	return directory;
+};
 
 module.exports.file = options => {
 	options = {
@@ -17,16 +25,25 @@ module.exports.file = options => {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(module.exports.directory(), options.name);
+		return path.join(getPath(), options.name);
 	}
 
 	return getPath() + '.' + options.extension.replace(/^\./, '');
 };
 
-module.exports.directory = () => {
+module.exports.directory = getPath;
+
+module.exports.clean = () => del.sync(cacheDirectories.map(directory => directory + '/**'), {force: true});
+
+module.exports.job = async fn => {
+	if (typeof fn !== 'function') {
+		throw new TypeError('Expected a function');
+	}
+
 	const directory = getPath();
-	fs.mkdirSync(directory);
-	return directory;
+	const output = await fn(directory);
+	await del(directory + '/**', {force: true});
+	return output;
 };
 
 Object.defineProperty(module.exports, 'root', {
@@ -34,3 +51,5 @@ Object.defineProperty(module.exports, 'root', {
 		return tempDir;
 	}
 });
+
+process.on('exit', module.exports.clean);
