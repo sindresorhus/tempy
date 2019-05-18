@@ -25,6 +25,7 @@ declare const tempy: {
 	/**
 	Get a temporary file path you can write to.
 
+	@param filePath - Path of the temporary file.
 	@example
 	```
 	import tempy = require('tempy');
@@ -38,6 +39,9 @@ declare const tempy: {
 	tempy.file({name: 'unicorn.png'});
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
 
+	tempy.writeSync('rainbow', '/directo/ries', {name: 'custom-name.txt'})
+	//=> '/tmp/directo/ries/custom-name.txt'
+
 	tempy.directory();
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
@@ -47,6 +51,7 @@ declare const tempy: {
 	/**
 	Get a temporary directory path. The directory is created for you.
 
+	@param directoryPath - Path of the temporary directory.
 	@example
 	```
 	import tempy = require('tempy');
@@ -55,7 +60,43 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	directory(): string;
+	directory(directoryPath?: string): string;
+
+	/**
+	Write string/buffer/stream to a random temp file.
+
+	@param fileContent - Data to write to the temp file.
+	@param filePath - Path of the temporary file.
+	@param options - Options to be passed to tempy.file().
+	@returns The file path of the temp file.
+
+	@example
+	```
+	import tempy = require('tempy');
+
+	let tempPath = await tempy.write('unicorn');
+	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+	fs.readFileSync(tempPath).toString();
+	//=> 'unicorn'
+	```
+	*/
+	write(fileContent: string | Buffer | NodeJS.ReadableStream, filePath?: string, options?: tempy.Options): Promise<string>;
+
+	/**
+	Synchronously write string/buffer/stream to a random temp file.
+	
+	@param fileContent - Data to write to the temp file.
+	@param filePath - Path of the temporary file.
+	@param options - Options to be passed to tempy.file().
+	@returns The file path of the temp file.
+	@example
+	```
+	tempy.writeSync('unicorn', 'rainbow/cake/pony');
+	//=> '/var/folders/_1/tk89k8215ts0rg0kmb096nj80000gn/T/4049f192-43e7-43b2-98d9-094e6760861b/rainbow/cake/pony'
+	```
+	*/
+	writeSync(fileContent: string | Buffer | NodeJS.ReadableStream, filePath?: string, options?: tempy.Options): string
 
 	/**
 	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.

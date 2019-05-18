@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import {tmpdir} from 'os';
 import test from 'ava';
 import tempy from '.';
@@ -9,10 +10,26 @@ test('.file()', t => {
 	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
 	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
 	t.true(tempy.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
+	t.true(tempy.file('/rainbow/unicorns').endsWith('/rainbow/unicorns'));
+	t.true(tempy.file('/directo/ries', {extension: '.txt'}).endsWith('ries.txt'));
+	t.true(tempy.file('/directo/ries', {name: 'text'}).endsWith('/directo/ries/text'));
 });
 
 test('.directory()', t => {
 	t.true(tempy.directory().includes(tmpdir()));
+	t.true(tempy.directory('/rainbow').endsWith('rainbow'));
+});
+
+test('.write()', async t => {
+	const tempPath = await tempy.write('rainbow');
+	t.deepEqual(fs.readFileSync(tempPath).toString(), 'rainbow');
+});
+
+test('.writeSync()', t => {
+	const tempPath = tempy.writeSync('rainbow', '/directo/ries', {name: 'custom-name.txt'});
+	t.deepEqual(fs.readFileSync(tempPath).toString(), 'rainbow');
+	t.true(tempPath.endsWith('custom-name.txt'));
+	t.true(tempPath.includes('/directo/ries'));
 });
 
 test('.root', t => {

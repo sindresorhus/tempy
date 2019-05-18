@@ -31,9 +31,15 @@ tempy.directory();
 
 ## API
 
-### tempy.file([options])
+### tempy.file([filePath, options])
 
 Get a temporary file path you can write to.
+
+#### filePath
+
+Type: `String`  
+
+Path of the the temporary file.
 
 #### options
 
@@ -53,9 +59,15 @@ Type: `string`
 
 Filename. Mutually exclusive with the `extension` option.
 
-### tempy.directory()
+### tempy.directory([directoryPath])
 
 Get a temporary directory path. The directory is created for you.
+
+#### directoryPath
+
+Type: `String`
+
+Path of the temporary directory.
 
 ### tempy.root
 
