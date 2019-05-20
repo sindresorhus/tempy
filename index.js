@@ -5,7 +5,7 @@ const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const del = require('del');
 
-const cacheDirectories = [];
+let cacheDirectories = [];
 
 const getPath = () => {
 	const directory = path.join(tempDir, uniqueString());
@@ -33,7 +33,11 @@ module.exports.file = options => {
 
 module.exports.directory = getPath;
 
-module.exports.clean = () => del.sync(cacheDirectories.map(directory => directory + '/**'), {force: true});
+module.exports.clean = () => {
+	const deletedDirectories = del.sync(cacheDirectories.map(directory => directory + '/**'), {force: true});
+	cacheDirectories = [];
+	return deletedDirectories;
+};
 
 module.exports.job = async fn => {
 	if (typeof fn !== 'function') {
