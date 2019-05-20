@@ -13,6 +13,7 @@ $ npm install tempy
 ## Usage
 
 ```js
+const pathExists = require('path-exists');
 const tempy = require('tempy');
 
 tempy.file();
@@ -26,8 +27,17 @@ tempy.file({name: 'unicorn.png'});
 
 tempy.directory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+tempy.clean();
+//=> ['/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd', ...]
+
+(async () => {
+	console.log(await tempy.job(directory => pathExists(directory)));
+	//=> true
+})();
 ```
 
+**Note:** Cleaning of temporary directories runs automatically when the process exits.
 
 ## API
 
@@ -57,10 +67,25 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
+### tempy.clean()
+
+Type: `string[]`
+
+Deletes temporary directories and returns an array of deleted path.
+
+### tempy.job(task)
+
+Returns a `Promise` for value obtained in `task`.
+
+#### task
+
+Type: `Function`
+
+A function that will be called with a temporary directory path. The directory is created and deleted when `Promise` is resolved.
+
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
-
 
 ## FAQ
 

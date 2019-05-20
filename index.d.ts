@@ -28,6 +28,7 @@ declare const tempy: {
 	@example
 	```
 	import tempy = require('tempy');
+	import pathExists = require('path-exists');
 
 	tempy.file();
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
@@ -40,6 +41,14 @@ declare const tempy: {
 
 	tempy.directory();
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+	tempy.clean();
+	//=> ['/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd', ...]
+
+	(async () => {
+		console.log(await tempy.job(directory => pathExists(directory)));
+		//=> true
+	})();
 	```
 	*/
 	file(options?: tempy.Options): string;
@@ -56,6 +65,21 @@ declare const tempy: {
 	```
 	*/
 	directory(): string;
+
+	/**
+	Deletes temporary directories and returns an array of deleted path.
+
+	@returns An array of deleted paths.
+	*/
+	clean(): string[];
+
+	/**
+	Returns a `Promise` for value obtained in `task`.
+
+	@returns Task output
+	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `Promise` is resolved.
+	*/
+	job(task: (directory: string) => unknown): Promise<unknown>;
 
 	/**
 	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
