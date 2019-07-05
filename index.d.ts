@@ -92,6 +92,8 @@ declare const tempy: {
 	@returns The file path of the temp file.
 	@example
 	```
+	import tempy = require('tempy');
+
 	tempy.writeSync('unicorn', 'rainbow/cake/pony');
 	//=> '/var/folders/_1/tk89k8215ts0rg0kmb096nj80000gn/T/4049f192-43e7-43b2-98d9-094e6760861b/rainbow/cake/pony'
 	```
