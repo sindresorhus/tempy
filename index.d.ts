@@ -1,4 +1,5 @@
 import {MergeExclusive} from 'type-fest';
+import { exists } from 'fs';
 
 declare namespace tempy {
 	type Options = MergeExclusive<
@@ -109,6 +110,22 @@ declare const tempy: {
 	```
 	*/
 	writeSync(fileContent: string | Buffer | NodeJS.ReadableStream, options?: tempy.Options): string
+
+	
+	/**
+	Check whether a path exists inside the root temporary directory.
+	
+	@param tempPath - Path whose existence is to be checked for.
+	@returns `true` or `false` based on the existence of the temporary path.
+	@example
+	```
+	import tempy = require('tempy');
+
+	tempy.exists('unicorn/and/pegasus');
+	//=> false
+	```
+	*/
+	exists(tempPath: string)
 
 	/**
 	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.

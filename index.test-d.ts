@@ -12,4 +12,5 @@ import tempy = require('.');
     expectType<string>(tempy.root);
     expectType<string>(tempy.writeSync('hi there'));
     expectType<string>(await tempy.write('hi there'));
+    expectType<boolean>(tempy.exists('any/directory'));
 })

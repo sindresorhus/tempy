@@ -36,8 +36,10 @@ module.exports.file = options => {
 module.exports.directory = (directoryPath, options) => {
 	const directory = getPath(directoryPath);
 	makeDir.sync(directory);
-	if (options && options.makeCwd)
+	if (options && options.makeCwd) {
 		process.chdir(directory);
+	}
+
 	return directory;
 };
 
@@ -74,6 +76,10 @@ module.exports.writeSync = (fileContent, options) => {
 	const tempFile = module.exports.file(options);
 	fs.writeFileSync(tempFile, fileContent);
 	return tempFile;
+};
+
+module.exports.exists = tempPath => {
+	return fs.existsSync(path.join(tempDir, tempPath));
 };
 
 Object.defineProperty(module.exports, 'root', {
