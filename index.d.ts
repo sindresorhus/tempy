@@ -125,7 +125,7 @@ declare const tempy: {
 	//=> false
 	```
 	*/
-	exists(tempPath: string)
+	exists(tempPath: string): boolean
 
 	/**
 	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
