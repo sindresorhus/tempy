@@ -33,9 +33,11 @@ module.exports.file = options => {
 	return getPath().replace(/$\\/, '') + (extension ? '.' + extension.replace(/^\./, '') : '');
 };
 
-module.exports.directory = directoryPath => {
+module.exports.directory = (directoryPath, options) => {
 	const directory = getPath(directoryPath);
 	makeDir.sync(directory);
+	if (options && options.makeCwd)
+		process.chdir(directory);
 	return directory;
 };
 

@@ -63,6 +63,7 @@ declare const tempy: {
 	Get a temporary directory path. The directory is created for you.
 
 	@param directoryPath - Path of the temporary directory.
+	@param options - Options for the temporary directory
 	@example
 	```
 	import tempy = require('tempy');
@@ -71,7 +72,7 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	directory(directoryPath?: string): string;
+	directory(directoryPath?: string, options?: {makeCwd: boolean}): string;
 
 	/**
 	Write string/buffer/stream to a random temp file.
