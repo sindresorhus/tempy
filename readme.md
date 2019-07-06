@@ -31,21 +31,26 @@ tempy.directory();
 
 ## API
 
-### tempy.file([filePath, options])
+### tempy.file([options])
 
 Get a temporary file path you can write to.
-
-#### filePath
-
-Type: `String`  
-
-Path of the the temporary file.
 
 #### options
 
 Type: `Object`
 
 *You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
+
+##### filePath
+
+Type: `string`
+
+Path of the temporary file.
+
+Use it when you need the temporary file to have a specific path and name inside the root temporary directory.
+For instance when you want to copy a directory to temporary directory maintaining the exact structure.
+
+Mutually exclusive with both `name` and `extension` option.
 
 ##### extension
 
@@ -68,6 +73,18 @@ Get a temporary directory path. The directory is created for you.
 Type: `String`
 
 Path of the temporary directory.
+
+### tempy.write(fileContent[[, options]](#options))
+
+Write string/buffer/stream to a random temp file.
+
+#### fileContent
+
+Contents of the temporary file.
+
+### tempy.writeSync(fileContent[[, options]](#options))
+
+Same as tempy.write but synchronous.
 
 ### tempy.root
 
