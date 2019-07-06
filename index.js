@@ -9,36 +9,28 @@ const makeDir = require('make-dir');
 
 const getPath = _path => path.join(tempDir, _path || uniqueString());
 
-module.exports.file = (filePath, options) => {
-	if (typeof filePath === 'object') {
-		options = filePath;
-		filePath = undefined;
+module.exports.file = options => {
+	const {filePath, name, extension} = {...options};
+
+	if (filePath) {
+		if (name || extension) {
+			throw new Error(`The \`filPath\` and ${options.name ? '`name`' : '`extension`'} options are mutually exclusive`);
+		}
+
+		const splittedPath = filePath.split('/');
+		const fileName = splittedPath.pop();
+		return path.join(module.exports.directory(fileName ? path.dirname(filePath) : filePath), (fileName || uniqueString()));
 	}
 
-	options = {
-		extension: '',
-		...options
-	};
-
-	if (options.name) {
-		if (options.extension) {
+	if (name) {
+		if (extension) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(module.exports.directory(filePath), options.name);
+		return path.join(module.exports.directory(filePath), name);
 	}
 
-	if (options.extension) {
-		options.extension = '.' + options.extension.replace(/^\./, '');
-	}
-
-	if (filePath) {
-		const splittedPath = filePath.split('/');
-		const fileName = splittedPath.pop();
-		return path.join(module.exports.directory(fileName ? path.dirname(filePath) : filePath), (fileName || uniqueString()) + options.extension);
-	}
-
-	return getPath().replace(/$\\/, '') + options.extension;
+	return getPath().replace(/$\\/, '') + (extension ? '.' + extension.replace(/^\./, '') : '');
 };
 
 module.exports.directory = directoryPath => {
@@ -47,7 +39,7 @@ module.exports.directory = directoryPath => {
 	return directory;
 };
 
-module.exports.write = async (fileContent, filePath, options) => {
+module.exports.write = async (fileContent, options) => {
 	const writeFileP = promisify(fs.writeFile);
 
 	const writeStream = async (filePath, fileContent) =>
@@ -68,7 +60,7 @@ module.exports.write = async (fileContent, filePath, options) => {
 				.on('finish', resolve);
 		});
 
-	const tempFile = module.exports.file(filePath, options);
+	const tempFile = module.exports.file(options);
 	const write = isStream(fileContent) ? writeStream : writeFileP;
 
 	await write(tempFile, fileContent);
@@ -76,8 +68,8 @@ module.exports.write = async (fileContent, filePath, options) => {
 	return tempFile;
 };
 
-module.exports.writeSync = (fileContent, filePath, options) => {
-	const tempFile = module.exports.file(filePath, options);
+module.exports.writeSync = (fileContent, options) => {
+	const tempFile = module.exports.file(options);
 	fs.writeFileSync(tempFile, fileContent);
 	return tempFile;
 };

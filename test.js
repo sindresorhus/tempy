@@ -10,9 +10,8 @@ test('.file()', t => {
 	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
 	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
 	t.true(tempy.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
-	t.true(tempy.file('/rainbow/unicorns').endsWith('/rainbow/unicorns'));
-	t.true(tempy.file('/directo/ries', {extension: '.txt'}).endsWith('ries.txt'));
-	t.true(tempy.file('/directo/ries', {name: 'text'}).endsWith('/directo/ries/text'));
+	t.true(tempy.file({filePath: '/rainbow/unicorns'}).endsWith('/rainbow/unicorns'));
+	t.true(tempy.file({filePath: '/directo/ries/text'}).endsWith('ries/text'));
 });
 
 test('.directory()', t => {
@@ -26,7 +25,7 @@ test('.write()', async t => {
 });
 
 test('.writeSync()', t => {
-	const tempPath = tempy.writeSync('rainbow', '/directo/ries', {name: 'custom-name.txt'});
+	const tempPath = tempy.writeSync('rainbow', {filePath: '/directo/ries/custom-name.txt'});
 	t.deepEqual(fs.readFileSync(tempPath).toString(), 'rainbow');
 	t.true(tempPath.endsWith('custom-name.txt'));
 	t.true(tempPath.includes('/directo/ries'));
