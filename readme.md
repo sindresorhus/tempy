@@ -61,12 +61,71 @@ Get a temporary directory path. The directory is created for you.
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
 
+### tempy.contextSync(cb)
 
-## FAQ
+Get the sync context
 
-### Why doesn't it have a cleanup method?
+```js
+tempy.contextSync((directoryPath) => {
+  // do something with temp directory
+})
+// directory is then deleted here
+```
 
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`rimraf`](https://github.com/isaacs/rimraf) for cleanup.
+you can also preserve the dir after the context by explicitly setting `keepDir` to `true`:
+```js
+const directory = tempy.contextSync({ keepDir: true })
+// it's basically equivalent to // tempy.directory()
+
+// or 
+
+tempy.contextSync({ keepDir: true }, directory => {
+  // directory is preserved here
+})
+// AND also here
+
+```
+
+Context: Promise version
+
+```js
+let myDir
+let onDone
+
+tempy.context()
+  .then(([tempDirectory, done]) => {
+    // assign to local vars, we need it for later
+    myDir = tempDirectory
+    onDone = done
+  })
+  .then(() => {
+    // a long task using myDir...
+  })
+  .then(() => {
+    // another long task using myDir...
+  })
+  .then(() => {
+    // call done when you are done with it!
+    onDone()
+  })
+  .then(() => {
+    // myDir is deleted now
+  })
+```
+
+Context: Using async/await api
+
+```js
+
+const [tempDir, cleanUp] = await tempy.context()
+// do something with tempDir here
+await cleanUp()
+// call cleanUp and tempDir is gone forever
+
+```
+
+
+Note: deletion is made with [del](https://github.com/sindresorhus/del)
 
 
 ## Related

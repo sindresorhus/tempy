@@ -7,13 +7,14 @@
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"engines": {
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd"
+		"test": "xo && ava && tsd",
+		"coverage": "nyc ava && nyc report --reporter=html"
 	},
 	"files": [
 		"index.js",
@@ -35,12 +36,15 @@
 		"uniq"
 	],
 	"dependencies": {
+		"del": "^5.1.0",
+		"once": "^1.4.0",
 		"temp-dir": "^1.0.0",
 		"type-fest": "^0.3.1",
 		"unique-string": "^1.0.0"
 	},
 	"devDependencies": {
 		"ava": "^1.4.1",
+		"nyc": "^14.1.1",
 		"tsd": "^0.7.2",
 		"xo": "^0.24.0"
 	}

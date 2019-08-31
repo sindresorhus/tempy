@@ -1,4 +1,5 @@
-import {MergeExclusive} from 'type-fest';
+import {MergeExclusive, Merge} from 'type-fest';
+import {Options as DelOptions} from 'del';
 
 declare namespace tempy {
 	type Options = MergeExclusive<
@@ -19,6 +20,28 @@ declare namespace tempy {
 			readonly name?: string;
 		}
 	>;
+	type ContextOptions = Merge<
+		/**
+		ContextOptions
+		*/ 
+	  {
+			/**
+				keep temp directory after leaving context
+				@default false
+		  */ 
+			keepDir?: boolean;
+		},
+	  {
+			/**
+			 * context call will pass `delOptions` opts key to del package when called
+			 * like this: 
+			 * "tempy.context({ delOptions: { force: false, dryrun: true ... } }, directory => { ... })
+			 * @default "{ force: true }"
+			 * default will force del to delete tempy context unless you pass different opts to it
+			 */
+			readonly delOptions?: DelOptions;
+		}
+	>
 }
 
 declare const tempy: {
@@ -58,6 +81,44 @@ declare const tempy: {
 	directory(): string;
 
 	/**
+	 * 
+	 * @param options
+	 * @returns tempy context dirname 
+	 */
+
+	contextSync(options?: tempy.ContextOptions): string;
+	/**
+	 * 
+	 * @param options 
+	 * @param callback
+	 */
+
+	contextSync(options?: tempy.ContextOptions, callback?: Function): void;
+	/**
+	 * 
+	 * @param callback 
+	 */
+
+	contextSync(callback?: Function): void;
+
+
+	/**
+	 * 
+	 * @param options
+	 * @see tempy.ContextOptions
+	 * @returns a temp dir location and a function to call when you need to clean it up
+	 */
+
+	context(options?: tempy.ContextOptions): Promise<[string, Function]>;
+	/**
+	 * 
+	 * @param options 
+	 * @returns a temp dir location and a function to call when you need to clean it up
+	 */
+
+	context(): Promise<[string, Function]>;
+
+  /**
 	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
 	*/
 	readonly root: string;
