@@ -8,15 +8,28 @@ test('.file()', t => {
 	t.true(tempy.file().includes(tmpdir()));
 	t.true(tempy.file({extension: 'png'}).endsWith('.png'));
 	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
-	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
 	t.true(tempy.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
+	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
+});
+
+test('.fileAsync()', async t => {
+	t.true((await tempy.fileAsync()).includes(tmpdir()));
+	t.true((await tempy.fileAsync({extension: 'png'})).endsWith('.png'));
+	t.true((await tempy.fileAsync({extension: '.png'})).endsWith('.png'));
+	t.true((await tempy.fileAsync({name: 'custom-name.md'})).endsWith('custom-name.md'));
+	t.false((await tempy.fileAsync({extension: '.png'})).endsWith('..png'));
 });
 
 test('.directory()', t => {
 	t.true(tempy.directory().includes(tmpdir()));
 });
 
+test('.directoryAsync()', async t => {
+	t.true((await tempy.directoryAsync()).includes(tmpdir()));
+});
+
 test('.clean()', t => {
+	tempy.directory();
 	const deleleDirectories = tempy.clean();
 	t.true(deleleDirectories.length > 0);
 	deleleDirectories.forEach(directory => {
@@ -24,7 +37,23 @@ test('.clean()', t => {
 	});
 });
 
-test('.job()', async t => {
+test('.cleanAsync()', async t => {
+	await tempy.directoryAsync();
+	const deleleDirectories = await tempy.cleanAsync();
+	t.true(deleleDirectories.length > 0);
+	deleleDirectories.forEach(directory => {
+		t.false(pathExists.sync(directory));
+	});
+});
+
+test('.job()', t => {
+	t.true(tempy.job(directory => pathExists.sync(directory)));
+
+	const deleleDirectory = tempy.job(directory => directory);
+	t.false(pathExists.sync(deleleDirectory));
+});
+
+test('.jobAsync()', async t => {
 	t.true(await tempy.job(async directory => pathExists(directory)));
 	t.true(await tempy.job(directory => pathExists.sync(directory)));
 
@@ -39,3 +68,5 @@ test('.root', t => {
 		tempy.root = 'foo';
 	});
 });
+
+// TODO Add test auto clean and disable auto clean
