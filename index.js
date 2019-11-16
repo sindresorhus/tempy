@@ -7,10 +7,9 @@ const tempDir = require('temp-dir');
 const getPath = () => path.join(tempDir, uniqueString());
 
 module.exports.file = options => {
-	options = {
-		extension: '',
-		...options
-	};
+	options = Object.assign({
+		extension: ''
+	}, options);
 
 	if (options.name) {
 		if (options.extension) {
