@@ -12,14 +12,14 @@ module.exports.file = options => {
 	};
 
 	if (options.name) {
-		if (options.extension != null) {
+		if (options.extension !== undefined && options.extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
 		return path.join(module.exports.directory(), options.name);
 	}
 
-	return getPath() + (options.extension == null ? '' : '.' + options.extension.replace(/^\./, ''));
+	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
 module.exports.directory = () => {
