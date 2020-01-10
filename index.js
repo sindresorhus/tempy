@@ -12,7 +12,7 @@ module.exports.file = options => {
 	};
 
 	if (options.name) {
-		if (options.extension) {
+		if (options.extension != null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
