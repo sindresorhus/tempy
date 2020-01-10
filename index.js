@@ -8,7 +8,6 @@ const getPath = () => path.join(tempDir, uniqueString());
 
 module.exports.file = options => {
 	options = {
-		extension: '',
 		...options
 	};
 
@@ -20,7 +19,7 @@ module.exports.file = options => {
 		return path.join(module.exports.directory(), options.name);
 	}
 
-	return getPath() + '.' + options.extension.replace(/^\./, '');
+	return getPath() + (options.extension == null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
 module.exports.directory = () => {
