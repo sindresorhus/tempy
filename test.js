@@ -5,6 +5,9 @@ import tempy from '.';
 
 test('.file()', t => {
 	t.true(tempy.file().includes(tmpdir()));
+	t.false(tempy.file().endsWith('.'));
+	t.false(tempy.file({extension: undefined}).endsWith('.'));
+	t.false(tempy.file({extension: null}).endsWith('.'));
 	t.true(tempy.file({extension: 'png'}).endsWith('.png'));
 	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
 	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
