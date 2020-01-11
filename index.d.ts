@@ -128,16 +128,6 @@ declare const tempy: {
 	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `function` is finished.
 	@returns Task output
 
-	@example
-	```
-	import pathExists = require('path-exists');
-	import tempy = require('tempy');
-
-	(() => {
-		console.log(tempy.job(directory => pathExists(directory)));
-		//=> true
-	})();
-	```
 	*/
 	job(task: (directory: string) => unknown): unknown;
 
@@ -149,12 +139,18 @@ declare const tempy: {
 
 	@example
 	```
-	import pathExists = require('path-exists');
+	import  path = require('path');
 	import tempy = require('tempy');
+	import  download = require('download');
+	import  wallpaper = require('wallpaper');
 
 	(async () => {
-		console.log(await tempy.jobAsync(directory => pathExists(directory)));
-		//=> true
+		console.log(await tempy.jobAsync(async directory => {
+			await download('http://unicorn.com/foo.jpg', directory, {filename: 'unicorn.jpg'});
+			await wallpaper.set(path.join(directory, 'unicorn.jpg'));
+			return 'done!';
+		}));
+		//=> 'done!'
 	})();
 	```
 	*/
