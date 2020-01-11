@@ -42,6 +42,27 @@ declare const tempy: {
 	file(options?: tempy.Options): string;
 
 	/**
+	Returns a `Promise` with a temporary file path you can write to.
+
+	@example
+	```
+	import tempy = require('tempy');
+
+	(async () => {
+		await tempy.fileAsync();
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+
+		await tempy.fileAsync({extension: 'png'});
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
+
+		await tempy.fileAsync({name: 'unicorn.png'});
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
+	})();
+	```
+	*/
+	fileAsync(options?: tempy.Options): Promise<string>;
+
+	/**
 	Get a temporary directory path. The directory is created for you.
 
 	@example
@@ -53,6 +74,21 @@ declare const tempy: {
 	```
 	*/
 	directory(): string;
+
+	/**
+	Returns a `Promise` with a temporary directory path. The directory is created for you.
+
+	@example
+	```
+	import tempy = require('tempy');
+
+	(async () => {
+		await tempy.directoryAsync();
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+	})();
+	```
+	*/
+	directoryAsync(): Promise<string>;
 
 	/**
 	Deletes temporary directories and returns an array of deleted path.
@@ -70,6 +106,42 @@ declare const tempy: {
 	clean(): string[];
 
 	/**
+	Returns a `Promise` with deletes temporary directories and returns an array of deleted path.
+
+	@returns An array of deleted paths.
+
+	@example
+	```
+	import tempy = require('tempy');
+
+	(async () => {
+		await empy.cleanAsync();
+		//=> ['/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd', ...]
+	})();
+	```
+	*/
+	cleanAsync(): Promise<string[]>;
+
+	/**
+	Returns the value obtained in `task`.
+
+	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `function` is finished.
+	@returns Task output
+
+	@example
+	```
+	import pathExists = require('path-exists');
+	import tempy = require('tempy');
+
+	(() => {
+		console.log(tempy.job(directory => pathExists(directory)));
+		//=> true
+	})();
+	```
+	*/
+	job(task: (directory: string) => unknown): unknown;
+
+	/**
 	Returns a `Promise` for value obtained in `task`.
 
 	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `Promise` is resolved.
@@ -81,12 +153,24 @@ declare const tempy: {
 	import tempy = require('tempy');
 
 	(async () => {
-		console.log(await tempy.job(directory => pathExists(directory)));
+		console.log(await tempy.jobAsync(directory => pathExists(directory)));
 		//=> true
 	})();
 	```
 	*/
-	job(task: (directory: string) => unknown): Promise<unknown>;
+	jobAsync(task: (directory: string) => unknown): Promise<unknown>;
+
+	/**
+	Disable auto cleaning directories
+
+	@example
+	```
+	import tempy = require('tempy');
+
+	tempy.disableAutoClean()
+	```
+	*/
+	disableAutoClean(): void;
 
 	/**
 	Get the root temporary directory path.
