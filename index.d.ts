@@ -50,12 +50,6 @@ declare const tempy: {
 
 	tempy.file({filePath: 'fol/ders/unicorn.png'});
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/fol/dersunicorn.png'
-
-	tempy.writeSync('rainbow', {filePath: '/directo/ries/custom-name.txt'})
-	//=> '/tmp/directo/ries/custom-name.txt'
-
-	tempy.directory();
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
 	file(options?: tempy.Options): string;
