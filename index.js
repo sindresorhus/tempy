@@ -6,7 +6,7 @@ const del = require('del');
 const makeDir = require('make-dir');
 const exitHook = require('exit-hook');
 
-let cacheDirectories = [];
+const cacheDirectories = [];
 
 const getPath = () => {
 	const directory = path.join(tempDir, uniqueString());
@@ -20,6 +20,15 @@ const getPathAsync = async () => {
 	await makeDir(directory);
 	cacheDirectories.push(directory);
 	return directory;
+};
+
+const removeCacheDirectories = directoryToRemove => {
+	directoryToRemove.forEach(directory => {
+		const index = cacheDirectories.indexOf(directory);
+		if (index > -1) {
+			cacheDirectories.splice(index, 1);
+		}
+	});
 };
 
 module.exports.file = options => {
@@ -64,13 +73,13 @@ module.exports.directoryAsync = getPathAsync;
 
 module.exports.clean = () => {
 	const deletedDirectories = del.sync(cacheDirectories, {force: true});
-	cacheDirectories = [];
+	removeCacheDirectories(deletedDirectories);
 	return deletedDirectories;
 };
 
 module.exports.cleanAsync = async () => {
 	const deletedDirectories = await del(cacheDirectories, {force: true});
-	cacheDirectories = [];
+	removeCacheDirectories(deletedDirectories);
 	return deletedDirectories;
 };
 
