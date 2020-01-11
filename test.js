@@ -46,18 +46,33 @@ test('.cleanAsync()', async t => {
 	});
 });
 
-test('.job()', t => {
-	t.true(tempy.job(directory => pathExists.sync(directory)));
+test('.jobDirectory()', t => {
+	t.true(tempy.jobDirectory(directory => pathExists.sync(directory)));
 
-	const deleleDirectory = tempy.job(directory => directory);
+	const deleleDirectory = tempy.jobDirectory(directory => directory);
 	t.false(pathExists.sync(deleleDirectory));
 });
 
-test('.jobAsync()', async t => {
-	t.true(await tempy.job(async directory => pathExists(directory)));
-	t.true(await tempy.job(directory => pathExists.sync(directory)));
+test('.jobDirectoryAsync()', async t => {
+	t.true(await tempy.jobDirectory(async directory => pathExists(directory)));
+	t.true(await tempy.jobDirectory(directory => pathExists.sync(directory)));
 
-	const deleleDirectory = await tempy.job(directory => directory);
+	const deleleDirectory = await tempy.jobDirectory(directory => directory);
+	t.false(await pathExists(deleleDirectory));
+});
+
+test('.jobFile()', t => {
+	t.true(tempy.jobFile(file => file.endsWith('custom-name.md'), {name: 'custom-name.md'}));
+
+	const deleleDirectory = tempy.jobFile(file => path.dirname(file), {name: 'custom-name.md'});
+	t.false(pathExists.sync(deleleDirectory));
+});
+
+test('.jobFileAsync()', async t => {
+	t.true(await tempy.jobFile(async file => file.endsWith('custom-name.md'), {name: 'custom-name.md'}));
+	t.true(await tempy.jobFile(file => file.endsWith('custom-name.md'), {name: 'custom-name.md'}));
+
+	const deleleDirectory = await tempy.jobFile(file => path.dirname(file), {name: 'custom-name.md'});
 	t.false(await pathExists(deleleDirectory));
 });
 

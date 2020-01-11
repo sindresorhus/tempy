@@ -31,7 +31,7 @@ const removeCacheDirectories = directoryToRemove => {
 	});
 };
 
-module.exports.file = options => {
+const getFile = (directory, options) => {
 	options = {
 		extension: '',
 		...options
@@ -42,30 +42,15 @@ module.exports.file = options => {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(getPath(), options.name);
-	}
-
-	return getPath() + '.' + options.extension.replace(/^\./, '');
-};
-
-module.exports.fileAsync = async options => {
-	options = {
-		extension: '',
-		...options
-	};
-
-	if (options.name) {
-		if (options.extension) {
-			throw new Error('The `name` and `extension` options are mutually exclusive');
-		}
-
-		const directory = await getPathAsync();
 		return path.join(directory, options.name);
 	}
 
-	const directory = await getPathAsync();
-	return directory + '.' + options.extension.replace(/^\./, '');
+	return path.join(directory, uniqueString() + '.' + options.extension.replace(/^\./, ''));
 };
+
+module.exports.file = options => getFile(getPath(), options);
+
+module.exports.fileAsync = async options => getFile(await getPathAsync(), options);
 
 module.exports.directory = getPath;
 
@@ -83,7 +68,7 @@ module.exports.cleanAsync = async () => {
 	return deletedDirectories;
 };
 
-module.exports.job = fn => {
+module.exports.jobDirectory = fn => {
 	if (typeof fn !== 'function') {
 		throw new TypeError('Expected a function');
 	}
@@ -94,13 +79,37 @@ module.exports.job = fn => {
 	return output;
 };
 
-module.exports.jobAsync = async fn => {
+module.exports.jobDirectoryAsync = async fn => {
+	if (typeof fn !== 'function') {
+		throw new TypeError('Expected a function');
+	}
+
+	const directory = await getPathAsync();
+	const output = await fn(directory);
+	await del(directory, {force: true});
+	return output;
+};
+
+module.exports.jobFile = (fn, options) => {
 	if (typeof fn !== 'function') {
 		throw new TypeError('Expected a function');
 	}
 
 	const directory = getPath();
-	const output = await fn(directory);
+	const file = getFile(directory, options);
+	const output = fn(file);
+	del.sync(directory, {force: true});
+	return output;
+};
+
+module.exports.jobFileAsync = async (fn, options) => {
+	if (typeof fn !== 'function') {
+		throw new TypeError('Expected a function');
+	}
+
+	const directory = await getPathAsync();
+	const file = getFile(directory, options);
+	const output = await fn(file);
 	await del(directory, {force: true});
 	return output;
 };

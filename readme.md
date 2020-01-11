@@ -13,8 +13,10 @@ $ npm install tempy
 ## Usage
 
 ```js
-const pathExists = require('path-exists');
 const tempy = require('tempy');
+const download = require('download');
+const wallpaper = require('wallpaper');
+const pathExists = require('path-exists');
 
 tempy.file();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
@@ -34,6 +36,13 @@ tempy.clean();
 (async () => {
 	console.log(await tempy.job(directory => pathExists(directory)));
 	//=> true
+
+	console.log(await tempy.jobDirectoryAsync(async directory => {
+		await download('http://unicorn.com/foo.jpg', directory, {filename: 'unicorn.jpg'});
+		await wallpaper.set(path.join(directory, 'unicorn.jpg'));
+		return 'done!';
+	}));
+	//=> 'done!'
 })();
 ```
 
@@ -83,11 +92,43 @@ Get a list of deleted temporary directories and clears them. This is useful for 
 
 Returns a `Promise` with a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
-### tempy.job(task)
+### tempy.jobFile(task, [options])
 
 Returns the value obtained in `task`.
 
-### tempy.jobAsync(task)
+### tempy.jobFileAsync(task, [options])
+
+Returns a `Promise` for value obtained in `task`.
+
+#### task
+
+Type: `Function`
+
+A function that will be called with a temporary file path. The file is created and deleted when `Function` is finished.
+
+#### options
+
+Type: `Object`
+
+*You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
+
+##### extension
+
+Type: `string`
+
+File extension.
+
+##### name
+
+Type: `string`
+
+Filename. Mutually exclusive with the `extension` option.
+
+### tempy.jobDirectory(task)
+
+Returns the value obtained in `task`.
+
+### tempy.jobDirectoryAsync(task)
 
 Returns a `Promise` for value obtained in `task`.
 

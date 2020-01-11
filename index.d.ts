@@ -129,7 +129,7 @@ declare const tempy: {
 	@returns Task output
 
 	*/
-	job(task: (directory: string) => unknown): unknown;
+	jobDirectory(task: (directory: string) => unknown): unknown;
 
 	/**
 	Returns a `Promise` for value obtained in `task`.
@@ -145,7 +145,7 @@ declare const tempy: {
 	import  wallpaper = require('wallpaper');
 
 	(async () => {
-		console.log(await tempy.jobAsync(async directory => {
+		console.log(await tempy.jobDirectoryAsync(async directory => {
 			await download('http://unicorn.com/foo.jpg', directory, {filename: 'unicorn.jpg'});
 			await wallpaper.set(path.join(directory, 'unicorn.jpg'));
 			return 'done!';
@@ -154,7 +154,25 @@ declare const tempy: {
 	})();
 	```
 	*/
-	jobAsync(task: (directory: string) => unknown): Promise<unknown>;
+	jobDirectoryAsnc(task: (directory: string) => unknown): Promise<unknown>;
+
+	/**
+	Returns the value obtained in `task`.
+
+	@param task - A function that will be called with a temporary file path. The file is created and deleted when `Function` is finished.
+	@returns Task output
+
+	*/
+	jobFile(task: (file: string) => unknown, options?: tempy.Options): unknown;
+
+	/**
+	Returns a `Promise` for value obtained in `task`.
+
+	@param task - A function that will be called with a temporary file path. The file is created and deleted when `Promise` is resolved.
+	@returns Task output
+
+	*/
+	jobFileAsync(task: (direcfiletory: string) => unknown, options?: tempy.Options): Promise<unknown>;
 
 	/**
 	Disable auto cleaning directories
