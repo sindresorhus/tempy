@@ -45,6 +45,10 @@ tempy.clean();
 
 Get a temporary file path you can write to.
 
+### tempy.fileAsync([options])
+
+Returns a `Promise` with a temporary file path you can write to.
+
 #### options
 
 Type: `Object`
@@ -67,13 +71,23 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
+### tempy.directoryAsync()
+
+Returns a `Promise` with a temporary directory path. The directory is created for you.
+
 ### tempy.clean()
 
-Type: `string[]`
+Get a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
-Deletes temporary directories and returns an array of deleted path.
+### tempy.cleanAsync()
+
+Returns a `Promise` with a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
 ### tempy.job(task)
+
+Returns the value obtained in `task`.
+
+### tempy.jobAsync(task)
 
 Returns a `Promise` for value obtained in `task`.
 
@@ -81,7 +95,11 @@ Returns a `Promise` for value obtained in `task`.
 
 Type: `Function`
 
-A function that will be called with a temporary directory path. The directory is created and deleted when `Promise` is resolved.
+A function that will be called with a temporary directory path. The directory is created and deleted when `Function` is finished.
+
+### tempy.disableAutoClean()
+
+Disable auto cleaning directories
 
 ### tempy.root
 

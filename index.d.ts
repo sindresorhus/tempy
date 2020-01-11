@@ -91,7 +91,7 @@ declare const tempy: {
 	directoryAsync(): Promise<string>;
 
 	/**
-	Deletes temporary directories and returns an array of deleted path.
+	Get a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
 	@returns An array of deleted paths.
 
@@ -106,7 +106,7 @@ declare const tempy: {
 	clean(): string[];
 
 	/**
-	Returns a `Promise` with deletes temporary directories and returns an array of deleted path.
+	Returns a `Promise` with a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
 	@returns An array of deleted paths.
 
@@ -125,7 +125,7 @@ declare const tempy: {
 	/**
 	Returns the value obtained in `task`.
 
-	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `function` is finished.
+	@param task - A function that will be called with a temporary directory path. The directory is created and deleted when `Function` is finished.
 	@returns Task output
 
 	*/
