@@ -4,7 +4,7 @@ const path = require('path');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 
-const getPath = () => path.join(tempDir, uniqueString());
+const getPath = prefix => path.join(tempDir, (prefix || '') + uniqueString());
 
 module.exports.file = options => {
 	options = {
@@ -23,8 +23,13 @@ module.exports.file = options => {
 	return getPath() + '.' + options.extension.replace(/^\./, '');
 };
 
-module.exports.directory = () => {
-	const directory = getPath();
+module.exports.directory = options => {
+	options = {
+		prefix: '',
+		...options
+	};
+
+	const directory = getPath(options.prefix);
 	fs.mkdirSync(directory);
 	return directory;
 };

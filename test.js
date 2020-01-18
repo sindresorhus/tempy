@@ -13,6 +13,7 @@ test('.file()', t => {
 
 test('.directory()', t => {
 	t.true(tempy.directory().includes(tmpdir()));
+	t.true(tempy.directory({prefix: 'name_'}).includes(tmpdir()));
 });
 
 test('.root', t => {

@@ -26,6 +26,9 @@ tempy.file({name: 'unicorn.png'});
 
 tempy.directory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+tempy.directory({prefix: 'name'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 ```
 
 
@@ -53,9 +56,15 @@ Type: `string`
 
 Filename. Mutually exclusive with the `extension` option.
 
-### tempy.directory()
+### tempy.directory([options])
 
 Get a temporary directory path. The directory is created for you.
+
+##### prefix
+
+Type: `string`
+
+Directory prefix.
 
 ### tempy.root
 
