@@ -8,19 +8,18 @@ const getPath = () => path.join(tempDir, uniqueString());
 
 module.exports.file = options => {
 	options = {
-		extension: '',
 		...options
 	};
 
 	if (options.name) {
-		if (options.extension) {
+		if (options.extension !== undefined && options.extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
 		return path.join(module.exports.directory(), options.name);
 	}
 
-	return getPath() + '.' + options.extension.replace(/^\./, '');
+	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
 module.exports.directory = () => {
