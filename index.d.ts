@@ -4,17 +4,21 @@ declare namespace tempy {
 	type Options = MergeExclusive<
 		{
 			/**
-			_You usually won't need this option. Specify it only when actually needed._
+			File extension.
 
-			File extension. Mutually exclusive with the `name` option.
+			Mutually exclusive with the `name` option.
+
+			_You usually won't need this option. Specify it only when actually needed._
 			*/
 			readonly extension?: string;
 		},
 		{
 			/**
-			_You usually won't need this option. Specify it only when actually needed._
+			Filename.
 
-			Filename. Mutually exclusive with the `extension` option.
+			Mutually exclusive with the `extension` option.
+
+			_You usually won't need this option. Specify it only when actually needed._
 			*/
 			readonly name?: string;
 		}
@@ -58,7 +62,9 @@ declare const tempy: {
 	directory(): string;
 
 	/**
-	Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
+	Get the root temporary directory path.
+
+	For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
 	*/
 	readonly root: string;
 };

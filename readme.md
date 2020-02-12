@@ -2,13 +2,11 @@
 
 > Get a random temporary file or directory path
 
-
 ## Install
 
 ```
 $ npm install tempy
 ```
-
 
 ## Usage
 
@@ -28,16 +26,15 @@ tempy.directory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 ```
 
-
 ## API
 
-### tempy.file([options])
+### tempy.file(options?)
 
 Get a temporary file path you can write to.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 *You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
 
@@ -61,19 +58,8 @@ Get a temporary directory path. The directory is created for you.
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
 
-
 ## FAQ
 
-### Why doesn't it have a cleanup method?
+#### Why doesn't it have a cleanup method?
 
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`rimraf`](https://github.com/isaacs/rimraf) for cleanup.
-
-
-## Related
-
-- [temp-write](https://github.com/sindresorhus/temp-write) - Write string/buffer/stream to a random temp file
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
+Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`del`](https://github.com/sindresorhus/del) for cleanup.
