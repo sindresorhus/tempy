@@ -12,10 +12,22 @@ test('.file()', t => {
 	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
 	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
 	t.true(tempy.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
-	t.throws(() => tempy.file({name: 'custom-name.md', extension: '.ext'}));
-	t.throws(() => tempy.file({name: 'custom-name.md', extension: ''}));
-	t.notThrows(() => tempy.file({name: 'custom-name.md', extension: undefined}));
-	t.notThrows(() => tempy.file({name: 'custom-name.md', extension: null}));
+
+	t.throws(() => {
+		tempy.file({name: 'custom-name.md', extension: '.ext'});
+	});
+
+	t.throws(() => {
+		tempy.file({name: 'custom-name.md', extension: ''});
+	});
+
+	t.notThrows(() => {
+		tempy.file({name: 'custom-name.md', extension: undefined});
+	});
+
+	t.notThrows(() => {
+		tempy.file({name: 'custom-name.md', extension: null});
+	});
 });
 
 test('.directory()', t => {
