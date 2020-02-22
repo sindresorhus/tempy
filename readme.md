@@ -54,6 +54,34 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
+### tempy.write(fileContent, options?)
+
+Write a string/buffer/stream to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer | stream.Readable`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
+### tempy.writeSync(fileContent, options?)
+
+Synchronously write a string/buffer to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
