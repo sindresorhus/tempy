@@ -1,26 +1,24 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const stream = require('stream');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const isStream = require('is-stream');
-const pify = require('pify');
-const writeFile = pify(fs.writeFile);
+const {writeFile} = fs.promises;
 
 const getPath = () => path.join(tempDir, uniqueString());
 
-const writeStream = async (filePath, fileContent) => new Promise((resolve, reject) => {
+const writeStream = async (filePath, data) => new Promise((resolve, reject) => {
 	const writable = fs.createWriteStream(filePath);
 
-	fileContent
-		.on('error', error => {
+	stream.pipeline(data, writable, error => {
+		if (error) {
 			reject(error);
-			fileContent.unpipe(writable);
+			data.unpipe(writable);
 			writable.end();
-		})
-		.pipe(writable)
-		.on('error', reject)
-		.on('finish', resolve);
+		}
+	}).on('finish', resolve);
 });
 
 module.exports.file = options => {
@@ -45,20 +43,20 @@ module.exports.directory = () => {
 	return directory;
 };
 
-module.exports.write = async (fileContent, options) => {
+module.exports.write = async (data, options) => {
 	const filename = module.exports.file(options);
 
-	const write = isStream(fileContent) ? writeStream : writeFile;
+	const write = isStream(data) ? writeStream : writeFile;
 
-	await write(filename, fileContent);
+	await write(filename, data);
 
 	return filename;
 };
 
-module.exports.writeSync = (fileContent, options) => {
+module.exports.writeSync = (data, options) => {
 	const filename = module.exports.file(options);
 
-	fs.writeFileSync(filename, fileContent);
+	fs.writeFileSync(filename, data);
 
 	return filename;
 };
