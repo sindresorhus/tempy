@@ -1,23 +1,18 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const stream = require('stream');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const isStream = require('is-stream');
-const {writeFile} = fs.promises;
+const stream = require('stream');
+const { promisify } = require('util');
+
+const pipeline = promisify(stream.pipeline);
+const { writeFile } = fs.promises;
 
 const getPath = () => path.join(tempDir, uniqueString());
 
-const writeStream = async (filePath, data) => new Promise((resolve, reject) => {
-	const writable = fs.createWriteStream(filePath);
-
-	stream.pipeline(data, writable, error => {
-		if (error) {
-			reject(error);
-		}
-	}).on('finish', resolve);
-});
+const writeStream = (filePath, data) => pipeline(data, fs.createWriteStream(filePath))
 
 module.exports.file = options => {
 	options = {
