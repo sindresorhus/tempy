@@ -5,14 +5,14 @@ const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const isStream = require('is-stream');
 const stream = require('stream');
-const { promisify } = require('util');
+const {promisify} = require('util');
 
 const pipeline = promisify(stream.pipeline);
-const { writeFile } = fs.promises;
+const {writeFile} = fs.promises;
 
 const getPath = () => path.join(tempDir, uniqueString());
 
-const writeStream = (filePath, data) => pipeline(data, fs.createWriteStream(filePath))
+const writeStream = (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
 module.exports.file = options => {
 	options = {
