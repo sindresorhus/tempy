@@ -1,5 +1,5 @@
 import path from 'path';
-import {tmpdir} from 'os';
+import { tmpdir } from 'os';
 import fs from 'fs';
 import stream from 'stream';
 import test from 'ava';
@@ -8,27 +8,27 @@ import tempy from '.';
 test('.file()', t => {
 	t.true(tempy.file().includes(tmpdir()));
 	t.false(tempy.file().endsWith('.'));
-	t.false(tempy.file({extension: undefined}).endsWith('.'));
-	t.false(tempy.file({extension: null}).endsWith('.'));
-	t.true(tempy.file({extension: 'png'}).endsWith('.png'));
-	t.true(tempy.file({extension: '.png'}).endsWith('.png'));
-	t.false(tempy.file({extension: '.png'}).endsWith('..png'));
-	t.true(tempy.file({name: 'custom-name.md'}).endsWith('custom-name.md'));
+	t.false(tempy.file({ extension: undefined }).endsWith('.'));
+	t.false(tempy.file({ extension: null }).endsWith('.'));
+	t.true(tempy.file({ extension: 'png' }).endsWith('.png'));
+	t.true(tempy.file({ extension: '.png' }).endsWith('.png'));
+	t.false(tempy.file({ extension: '.png' }).endsWith('..png'));
+	t.true(tempy.file({ name: 'custom-name.md' }).endsWith('custom-name.md'));
 
 	t.throws(() => {
-		tempy.file({name: 'custom-name.md', extension: '.ext'});
+		tempy.file({ name: 'custom-name.md', extension: '.ext' });
 	});
 
 	t.throws(() => {
-		tempy.file({name: 'custom-name.md', extension: ''});
+		tempy.file({ name: 'custom-name.md', extension: '' });
 	});
 
 	t.notThrows(() => {
-		tempy.file({name: 'custom-name.md', extension: undefined});
+		tempy.file({ name: 'custom-name.md', extension: undefined });
 	});
 
 	t.notThrows(() => {
-		tempy.file({name: 'custom-name.md', extension: null});
+		tempy.file({ name: 'custom-name.md', extension: null });
 	});
 });
 
@@ -37,7 +37,7 @@ test('.directory()', t => {
 });
 
 test('.write(string)', async t => {
-	const filePath = await tempy.write('unicorn', {name: 'test.png'});
+	const filePath = await tempy.write('unicorn', { name: 'test.png' });
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 	t.is(path.basename(filePath), 'test.png');
 });
@@ -55,6 +55,23 @@ test('.write(stream)', async t => {
 	readable.push(null);
 	const filePath = await tempy.write(readable);
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
+});
+
+test('.write(stream) failing stream', async t => {
+	const readable = new stream.Readable({
+		read() { }
+	});
+	readable.push('unicorn');
+	setImmediate(() => {
+		readable.emit('error', new Error('Catch me if you can!'));
+		readable.push(null);
+	})
+	try {
+		await tempy.write(readable);
+		t.fail();
+	} catch (error) {
+		t.is(error.name, 'Catch me if you can!');
+	}
 });
 
 test('.writeSync()', t => {
