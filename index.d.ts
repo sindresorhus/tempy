@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import {MergeExclusive} from 'type-fest';
+import {MergeExclusive, TypedArray} from 'type-fest';
 
 declare namespace tempy {
 	type Options = MergeExclusive<
@@ -25,6 +25,8 @@ declare namespace tempy {
 			readonly name?: string;
 		}
 	>;
+
+	type WritableTypes = string | Buffer | TypedArray | DataView
 }
 
 declare const tempy: {
@@ -74,7 +76,7 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	write(fileContent: string | Buffer | NodeJS.ReadableStream, options?: tempy.Options): Promise<string>
+	write(fileContent: tempy.WritableTypes | NodeJS.ReadableStream, options?: tempy.Options): Promise<string>
 
 	/**
 	Synchronously write a string/buffer to a random temp file.
@@ -87,7 +89,7 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	writeSync(fileContent: string | Buffer, options?: tempy.Options): string
+	writeSync(fileContent: tempy.WritableTypes, options?: tempy.Options): string
 
 	/**
 	Get the root temporary directory path.

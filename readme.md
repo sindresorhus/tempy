@@ -60,7 +60,7 @@ Write a string/buffer/stream to a random temp file.
 
 ##### fileContent
 
-Type: `string | Buffer | stream.Readable`
+Type: `string | Buffer | TypedArray | DataView | stream.Readable`
 
 Data to write to the temp file.
 
@@ -74,7 +74,7 @@ Synchronously write a string/buffer to a random temp file.
 
 ##### fileContent
 
-Type: `string | Buffer`
+Type: `string | Buffer | TypedArray | DataView`
 
 Data to write to the temp file.
 
