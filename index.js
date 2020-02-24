@@ -15,8 +15,6 @@ const writeStream = async (filePath, data) => new Promise((resolve, reject) => {
 	stream.pipeline(data, writable, error => {
 		if (error) {
 			reject(error);
-			data.unpipe(writable);
-			writable.end();
 		}
 	}).on('finish', resolve);
 });
