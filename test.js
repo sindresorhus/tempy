@@ -66,12 +66,10 @@ test('.write(stream) failing stream', async t => {
 		readable.emit('error', new Error('Catch me if you can!'));
 		readable.push(null);
 	});
-	try {
-		await tempy.write(readable);
-		t.fail();
-	} catch (error) {
-		t.is(error.name, 'Catch me if you can!');
-	}
+	await t.throwsAsync(() => tempy.write(readable), {
+		instanceOf: Error,
+		message: 'Catch me if you can!'
+	});
 });
 
 test('.writeSync()', t => {
