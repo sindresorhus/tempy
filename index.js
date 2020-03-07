@@ -12,7 +12,7 @@ const {writeFile} = fs.promises;
 
 const getPath = () => path.join(tempDir, uniqueString());
 
-const writeStream = (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
+const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
 module.exports.file = options => {
 	options = {
