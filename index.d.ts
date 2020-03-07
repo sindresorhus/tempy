@@ -76,7 +76,7 @@ declare const tempy: {
 	write(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.Options): Promise<string>;
 
 	/**
-	Synchronously write a string/buffer to a random temp file.
+	Synchronously write data to a random temp file.
 
 	@example
 	```
