@@ -65,7 +65,7 @@ declare const tempy: {
 	directory(): string;
 
 	/**
-	Write a string/buffer/stream to a random temp file.
+	Write data to a random temp file.
 
 	@example
 	```
