@@ -49,7 +49,7 @@ test('.write(buffer)', async t => {
 
 test('.write(stream)', async t => {
 	const readable = new stream.Readable({
-		read() { }
+		read() {}
 	});
 	readable.push('unicorn');
 	readable.push(null);
@@ -59,7 +59,7 @@ test('.write(stream)', async t => {
 
 test('.write(stream) failing stream', async t => {
 	const readable = new stream.Readable({
-		read() { }
+		read() {}
 	});
 	readable.push('unicorn');
 	setImmediate(() => {
@@ -79,6 +79,7 @@ test('.writeSync()', t => {
 test('.root', t => {
 	t.true(tempy.root.length > 0);
 	t.true(path.isAbsolute(tempy.root));
+
 	t.throws(() => {
 		tempy.root = 'foo';
 	});
