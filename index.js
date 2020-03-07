@@ -38,19 +38,14 @@ module.exports.directory = () => {
 
 module.exports.write = async (data, options) => {
 	const filename = module.exports.file(options);
-
 	const write = isStream(data) ? writeStream : writeFile;
-
 	await write(filename, data);
-
 	return filename;
 };
 
 module.exports.writeSync = (data, options) => {
 	const filename = module.exports.file(options);
-
 	fs.writeFileSync(filename, data);
-
 	return filename;
 };
 
