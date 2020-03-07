@@ -1,5 +1,4 @@
-/// <reference types="node" />
-
+/// <reference types="node"/>
 import {MergeExclusive, TypedArray} from 'type-fest';
 
 declare namespace tempy {
