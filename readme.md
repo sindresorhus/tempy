@@ -56,7 +56,7 @@ Get a temporary directory path. The directory is created for you.
 
 ### tempy.write(fileContent, options?)
 
-Write a string/buffer/stream to a random temp file.
+Write data to a random temp file.
 
 ##### fileContent
 
@@ -70,7 +70,7 @@ See [options](#options).
 
 ### tempy.writeSync(fileContent, options?)
 
-Synchronously write a string/buffer to a random temp file.
+Synchronously write data to a random temp file.
 
 ##### fileContent
 
