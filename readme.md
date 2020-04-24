@@ -2,13 +2,11 @@
 
 > Get a random temporary file or directory path
 
-
 ## Install
 
 ```
 $ npm install tempy
 ```
-
 
 ## Usage
 
@@ -50,17 +48,35 @@ tempy.clean();
 
 ## API
 
-### tempy.file([options])
+### tempy.file(options?)
 
 Get a temporary file path you can write to.
 
-### tempy.fileAsync([options])
+#### options
+
+Type: `object`
+
+*You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
+
+##### extension
+
+Type: `string`
+
+File extension.
+
+##### name
+
+Type: `string`
+
+Filename. Mutually exclusive with the `extension` option.
+
+### tempy.fileAsync(options?)
 
 Returns a `Promise` with a temporary file path you can write to.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 *You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
 
@@ -84,6 +100,34 @@ Get a temporary directory path. The directory is created for you.
 
 Returns a `Promise` with a temporary directory path. The directory is created for you.
 
+### tempy.write(fileContent, options?)
+
+Write data to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer | TypedArray | DataView | stream.Readable`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
+### tempy.writeSync(fileContent, options?)
+
+Synchronously write data to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer | TypedArray | DataView`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
 ### tempy.clean()
 
 Get a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
@@ -92,11 +136,35 @@ Get a list of deleted temporary directories and clears them. This is useful for 
 
 Returns a `Promise` with a list of deleted temporary directories and clears them. This is useful for when auto cleanup is disabled or when there are lots of temp files.
 
-### tempy.jobFile(task, [options])
+### tempy.jobFile(task, options?)
 
 Returns the value obtained in `task`.
 
-### tempy.jobFileAsync(task, [options])
+#### task
+
+Type: `Function`
+
+A function that will be called with a temporary file path. The file is created and deleted when `Function` is finished.
+
+#### options
+
+Type: `Object`
+
+*You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
+
+##### extension
+
+Type: `string`
+
+File extension.
+
+##### name
+
+Type: `string`
+
+Filename. Mutually exclusive with the `extension` option.
+
+### tempy.jobFileAsync(task, options?)
 
 Returns a `Promise` for value obtained in `task`.
 
@@ -128,6 +196,12 @@ Filename. Mutually exclusive with the `extension` option.
 
 Returns the value obtained in `task`.
 
+#### task
+
+Type: `Function`
+
+A function that will be called with a temporary directory path. The directory is created and deleted when `Function` is finished.
+
 ### tempy.jobDirectoryAsync(task)
 
 Returns a `Promise` for value obtained in `task`.
@@ -145,19 +219,3 @@ Disable auto cleaning directories
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
-
-## FAQ
-
-### Why doesn't it have a cleanup method?
-
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`rimraf`](https://github.com/isaacs/rimraf) for cleanup.
-
-
-## Related
-
-- [temp-write](https://github.com/sindresorhus/temp-write) - Write string/buffer/stream to a random temp file
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

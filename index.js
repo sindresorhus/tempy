@@ -1,10 +1,17 @@
 'use strict';
+const fs = require('fs');
 const path = require('path');
+const stream = require('stream');
+const {promisify} = require('util');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const del = require('del');
 const makeDir = require('make-dir');
 const exitHook = require('exit-hook');
+const isStream = require('is-stream');
+
+const pipeline = promisify(stream.pipeline);
+const {writeFile} = fs.promises;
 
 const cacheDirectories = [];
 
@@ -31,21 +38,22 @@ const removeCacheDirectories = directoryToRemove => {
 	});
 };
 
+const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
+
 const getFile = (directory, options) => {
 	options = {
-		extension: '',
 		...options
 	};
 
 	if (options.name) {
-		if (options.extension) {
+		if (options.extension !== undefined && options.extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
 		return path.join(directory, options.name);
 	}
 
-	return path.join(directory, uniqueString() + '.' + options.extension.replace(/^\./, ''));
+	return path.join(directory, uniqueString() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, '')));
 };
 
 module.exports.file = options => getFile(getPath(), options);
@@ -112,6 +120,19 @@ module.exports.jobFileAsync = async (fn, options) => {
 	const output = await fn(file);
 	await del(directory, {force: true});
 	return output;
+};
+
+module.exports.write = async (data, options) => {
+	const filename = module.exports.file(options);
+	const write = isStream(data) ? writeStream : writeFile;
+	await write(filename, data);
+	return filename;
+};
+
+module.exports.writeSync = (data, options) => {
+	const filename = module.exports.file(options);
+	fs.writeFileSync(filename, data);
+	return filename;
 };
 
 Object.defineProperty(module.exports, 'root', {
