@@ -20,7 +20,6 @@ declare namespace tempy {
 		}
 	>;
 
-
 	type DirectoryOptions = {
 		/**
 		_You usually won't need this option. Specify it only when actually needed._
