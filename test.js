@@ -1,5 +1,5 @@
 import path from 'path';
-import tempDir from "temp-dir";
+import tempDir from 'temp-dir';
 import fs from 'fs';
 import stream from 'stream';
 import test from 'ava';
