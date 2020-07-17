@@ -25,6 +25,8 @@ declare namespace tempy {
 		_You usually won't need this option. Specify it only when actually needed._
 
 		Directory prefix.
+
+		Useful for testing by making it easier to identify cache directories that are created.
 		*/
 		readonly prefix?: string;
 	}

@@ -72,6 +72,8 @@ Type: `string`
 
 Directory prefix.
 
+Useful for testing by making it easier to identify cache directories that are created.
+
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
