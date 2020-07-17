@@ -4,7 +4,7 @@ const path = require('path');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 
-const getPath = prefix => path.join(tempDir, (prefix || '') + uniqueString());
+const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
 
 module.exports.file = options => {
 	options = {
