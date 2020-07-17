@@ -23,7 +23,7 @@ module.exports.file = options => {
 	return getPath() + '.' + options.extension.replace(/^\./, '');
 };
 
-module.exports.directory = ({prefix = ''} = {})  => {
+module.exports.directory = ({prefix = ''} = {}) => {
 	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
