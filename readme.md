@@ -60,6 +60,10 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
+#### options
+
+Type: `Object`
+
 ##### prefix
 
 Type: `string`
