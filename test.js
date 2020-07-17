@@ -1,12 +1,12 @@
 import path from 'path';
-import {tmpdir} from 'os';
+import tempDir from "temp-dir";
 import fs from 'fs';
 import stream from 'stream';
 import test from 'ava';
 import tempy from '.';
 
 test('.file()', t => {
-	t.true(tempy.file().includes(tmpdir()));
+	t.true(tempy.file().includes(tempDir()));
 	t.false(tempy.file().endsWith('.'));
 	t.false(tempy.file({extension: undefined}).endsWith('.'));
 	t.false(tempy.file({extension: null}).endsWith('.'));
@@ -33,7 +33,7 @@ test('.file()', t => {
 });
 
 test('.directory()', t => {
-	t.true(tempy.directory().includes(tmpdir()));
+	t.true(tempy.directory().includes(tempDir()));
 });
 
 test('.write(string)', async t => {
