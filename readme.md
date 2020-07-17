@@ -2,13 +2,11 @@
 
 > Get a random temporary file or directory path
 
-
 ## Install
 
 ```
 $ npm install tempy
 ```
-
 
 ## Usage
 
@@ -31,16 +29,15 @@ tempy.directory({prefix: 'name'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 ```
 
-
 ## API
 
-### tempy.file([options])
+### tempy.file(options?)
 
 Get a temporary file path you can write to.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 *You usually won't need either the `extension` or `name` option. Specify them only when actually needed.*
 
@@ -74,23 +71,40 @@ Directory prefix.
 
 Useful for testing by making it easier to identify cache directories that are created.
 
+### tempy.write(fileContent, options?)
+
+Write data to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer | TypedArray | DataView | stream.Readable`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
+### tempy.writeSync(fileContent, options?)
+
+Synchronously write data to a random temp file.
+
+##### fileContent
+
+Type: `string | Buffer | TypedArray | DataView`
+
+Data to write to the temp file.
+
+##### options
+
+See [options](#options).
+
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
 
-
 ## FAQ
 
-### Why doesn't it have a cleanup method?
+#### Why doesn't it have a cleanup method?
 
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`rimraf`](https://github.com/isaacs/rimraf) for cleanup.
-
-
-## Related
-
-- [temp-write](https://github.com/sindresorhus/temp-write) - Write string/buffer/stream to a random temp file
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
+Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`del`](https://github.com/sindresorhus/del) for cleanup.
