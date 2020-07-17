@@ -66,6 +66,8 @@ Type: `Object`
 
 ##### prefix
 
+_You usually won't need this option. Specify it only when actually needed._
+
 Type: `string`
 
 Directory prefix.
