@@ -12,8 +12,10 @@ test('.file()', t => {
 });
 
 test('.directory()', t => {
+	const prefix = 'name_';
+
 	t.true(tempy.directory().includes(tmpdir()));
-	t.true(tempy.directory({prefix: 'name_'}).includes(tmpdir()));
+	t.true(tempy.directory({prefix}).startsWith(prefix));
 });
 
 test('.root', t => {
