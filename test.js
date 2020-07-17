@@ -15,7 +15,7 @@ test('.directory()', t => {
 	const prefix = 'name_';
 
 	t.true(tempy.directory().includes(tmpdir()));
-	t.true(tempy.directory({prefix}).startsWith(prefix));
+	t.true(path.basename(tempy.directory({prefix})).startsWith(prefix));
 });
 
 test('.root', t => {
