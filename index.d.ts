@@ -87,7 +87,7 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	write(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.Options): Promise<string>;
+	write(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.FileOptions): Promise<string>;
 
 	/**
 	Synchronously write data to a random temp file.
@@ -100,7 +100,7 @@ declare const tempy: {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	writeSync(fileContent: string | Buffer | TypedArray | DataView, options?: tempy.Options): string;
+	writeSync(fileContent: string | Buffer | TypedArray | DataView, options?: tempy.FileOptions): string;
 
 	/**
 	Get the root temporary directory path.
