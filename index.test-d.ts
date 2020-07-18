@@ -1,7 +1,7 @@
 import {expectType, expectError} from 'tsd';
 import tempy = require('.');
 
-const options: tempy.FileOptions = {};
+const options: tempy.FileOptions = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
 expectType<string>(tempy.directory());
 expectType<string>(tempy.directory({prefix: 'name_'}));
 expectType<string>(tempy.file());

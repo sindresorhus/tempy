@@ -1,4 +1,4 @@
-# tempy [![Build Status](https://travis-ci.org/sindresorhus/tempy.svg?branch=master)](https://travis-ci.org/sindresorhus/tempy)
+# tempy [![Build Status](https://travis-ci.com/sindresorhus/tempy.svg?branch=master)](https://travis-ci.com/github/sindresorhus/tempy)
 
 > Get a random temporary file or directory path
 
@@ -63,13 +63,14 @@ Type: `Object`
 
 ##### prefix
 
-_You usually won't need this option. Specify it only when actually needed._
 
 Type: `string`
 
 Directory prefix.
 
 Useful for testing by making it easier to identify cache directories that are created.
+
+*You usually won't need this option. Specify it only when actually needed.*
 
 ### tempy.write(fileContent, options?)
 
