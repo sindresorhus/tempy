@@ -33,7 +33,10 @@ test('.file()', t => {
 });
 
 test('.directory()', t => {
+	const prefix = 'name_';
+
 	t.true(tempy.directory().includes(tempDir));
+	t.true(path.basename(tempy.directory({prefix})).startsWith(prefix));
 });
 
 test('.write(string)', async t => {

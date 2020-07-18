@@ -24,6 +24,9 @@ tempy.file({name: 'unicorn.png'});
 
 tempy.directory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+tempy.directory({prefix: 'name'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 ```
 
 ## API
@@ -50,9 +53,23 @@ Type: `string`
 
 Filename. Mutually exclusive with the `extension` option.
 
-### tempy.directory()
+### tempy.directory([options])
 
 Get a temporary directory path. The directory is created for you.
+
+#### options
+
+Type: `Object`
+
+##### prefix
+
+_You usually won't need this option. Specify it only when actually needed._
+
+Type: `string`
+
+Directory prefix.
+
+Useful for testing by making it easier to identify cache directories that are created.
 
 ### tempy.write(fileContent, options?)
 

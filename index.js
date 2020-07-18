@@ -10,7 +10,7 @@ const {promisify} = require('util');
 const pipeline = promisify(stream.pipeline);
 const {writeFile} = fs.promises;
 
-const getPath = () => path.join(tempDir, uniqueString());
+const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
@@ -30,8 +30,8 @@ module.exports.file = options => {
 	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
-module.exports.directory = () => {
-	const directory = getPath();
+module.exports.directory = ({prefix = ''} = {}) => {
+	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
 };
