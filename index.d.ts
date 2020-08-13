@@ -5,22 +5,22 @@ declare namespace tempy {
 	type FileOptions = MergeExclusive<
 	{
 		/**
-			File extension.
+					File extension.
 
-			Mutually exclusive with the `name` option.
+					Mutually exclusive with the `name` option.
 
-			_You usually won't need this option. Specify it only when actually needed._
-			*/
+					_You usually won't need this option. Specify it only when actually needed._
+					*/
 		readonly extension?: string;
 	},
 	{
 		/**
-			Filename.
+					Filename.
 
-			Mutually exclusive with the `extension` option.
+					Mutually exclusive with the `extension` option.
 
-			_You usually won't need this option. Specify it only when actually needed._
-			*/
+					_You usually won't need this option. Specify it only when actually needed._
+					*/
 		readonly name?: string;
 	}
 	>;
@@ -35,59 +35,113 @@ declare namespace tempy {
 		*/
 		readonly prefix?: string;
 	};
+
+	/**
+	The path to the temporary object created by the function.
+	*/
+	type TaskCallback = (tempPath: string) => void;
 }
 
 declare const tempy: {
-	/**
-	Get a temporary file path you can write to.
+	file: {
+		/**
+		Get a temporary file path you can write through the callback. The file is automatically cleaned up after the callback to executed.
 
-	@example
-	```
-	import tempy = require('tempy');
+		@example
+		```
+		import tempy = require('tempy');
 
-	tempy.file();
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+		await tempy.file.task(tempFile => {
+			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+		});
+		```
+		*/
+		task: (callback: tempy.TaskCallback, options?: tempy.FileOptions) => Promise<void>;
 
-	tempy.file({extension: 'png'});
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
+		/**
+		Get a temporary file path you can write to.
 
-	tempy.file({name: 'unicorn.png'});
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
+		@example
+		```
+		import tempy = require('tempy');
 
-	tempy.directory();
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-	```
-	*/
-	file: (options?: tempy.FileOptions) => string;
+		tempy.file();
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 
-	/**
-	Get a temporary directory path. The directory is created for you.
+		tempy.file({extension: 'png'});
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
 
-	@example
-	```
-	import tempy = require('tempy');
+		tempy.file({name: 'unicorn.png'});
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
 
-	tempy.directory();
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+		tempy.directory();
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+		```
+		*/
+		(options?: tempy.FileOptions): string;
+	};
 
-	tempy.directory({prefix: 'a'});
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
-	```
-	*/
-	directory: (options?: tempy.DirectoryOptions) => string;
+	directory: {
+		/**
+		Get a temporary directory path. The directory is created for you and is automatically cleaned up after the callback is executed.
 
-	/**
-	Write data to a random temp file.
+		@example
+		```
+		import tempy = require('tempy');
 
-	@example
-	```
-	import tempy = require('tempy');
+		await tempy.directory.task(tempDirectory => {
+			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+		})
+		```
+		*/
+		task: (callback: tempy.TaskCallback, options?: tempy.TaskCallback) => Promise<void>;
 
-	await tempy.write('🦄');
-	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-	```
-	*/
-	write: (fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.FileOptions) => Promise<string>;
+		/**
+		Get a temporary directory path through the callback. The directory is created for you.
+
+		@example
+		```
+		import tempy = require('tempy');
+
+		tempy.directory();
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+
+		tempy.directory({prefix: 'a'});
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
+		```
+		*/
+		(options?: tempy.DirectoryOptions): string;
+	};
+
+	write: {
+
+		/**
+		Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
+
+		@example
+		```
+		import tempy = require('tempy');
+
+		await tempy.write.task('🦄', tempFile => {
+			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+		});
+		```
+		*/
+		task: (fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: tempy.TaskCallback, options?: tempy.FileOptions) => Promise<void>;
+
+		/**
+		Write data to a random temp file.
+
+		@example
+		```
+		import tempy = require('tempy');
+
+		await tempy.write('🦄');
+		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+		```
+		*/
+		(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.FileOptions): Promise<string>;
+	};
 
 	/**
 	Synchronously write data to a random temp file.

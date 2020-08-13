@@ -4,6 +4,7 @@ const path = require('path');
 const uniqueString = require('unique-string');
 const tempDir = require('temp-dir');
 const isStream = require('is-stream');
+const del = require('del');
 const stream = require('stream');
 const {promisify} = require('util');
 
@@ -13,6 +14,13 @@ const {writeFile} = fs.promises;
 const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
+
+const createTask = (tempyFunction, {extraArguments = 0} = {}) => async (...arguments_) => {
+	const [callback, options] = arguments_.slice(extraArguments);
+	const result = await tempyFunction(...arguments_.slice(0, extraArguments), options);
+	await callback(result);
+	await del(result, {force: true});
+};
 
 module.exports.file = options => {
 	options = {
@@ -30,11 +38,15 @@ module.exports.file = options => {
 	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
+module.exports.file.task = createTask(module.exports.file);
+
 module.exports.directory = ({prefix = ''} = {}) => {
 	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
 };
+
+module.exports.directory.task = createTask(module.exports.directory);
 
 module.exports.write = async (data, options) => {
 	const filename = module.exports.file(options);
@@ -42,6 +54,8 @@ module.exports.write = async (data, options) => {
 	await write(filename, data);
 	return filename;
 };
+
+module.exports.write.task = createTask(module.exports.write, {extraArguments: 1});
 
 module.exports.writeSync = (data, options) => {
 	const filename = module.exports.file(options);

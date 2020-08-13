@@ -1,5 +1,7 @@
 import path from 'path';
 import tempDir from 'temp-dir';
+import pathExists from 'path-exists';
+import touch from 'touch';
 import fs from 'fs';
 import stream from 'stream';
 import test from 'ava';
@@ -32,6 +34,15 @@ test('.file()', t => {
 	});
 });
 
+test('.file.task()', async t => {
+	let temporaryFilePath;
+	await tempy.file.task(async temporaryFile => {
+		await touch(temporaryFile);
+		temporaryFilePath = temporaryFile;
+	});
+	t.false(await pathExists(temporaryFilePath));
+});
+
 test('.directory()', t => {
 	const prefix = 'name_';
 
@@ -39,10 +50,27 @@ test('.directory()', t => {
 	t.true(path.basename(tempy.directory({prefix})).startsWith(prefix));
 });
 
+test('.directory.task()', async t => {
+	let temporaryDirectoryPath;
+	await tempy.file.task(async temporaryDirectory => {
+		await touch(temporaryDirectory);
+		temporaryDirectoryPath = temporaryDirectory;
+	});
+	t.false(await pathExists(temporaryDirectoryPath));
+});
+
 test('.write(string)', async t => {
 	const filePath = await tempy.write('unicorn', {name: 'test.png'});
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 	t.is(path.basename(filePath), 'test.png');
+});
+
+test('.write.task(string)', async t => {
+	let temporaryFilePath;
+	await tempy.write.task('', async temporaryFile => {
+		temporaryFilePath = temporaryFile;
+	});
+	t.false(await pathExists(temporaryFilePath));
 });
 
 test('.write(buffer)', async t => {
@@ -52,7 +80,7 @@ test('.write(buffer)', async t => {
 
 test('.write(stream)', async t => {
 	const readable = new stream.Readable({
-		read() {}
+		read() { }
 	});
 	readable.push('unicorn');
 	readable.push(null);
@@ -62,7 +90,7 @@ test('.write(stream)', async t => {
 
 test('.write(stream) failing stream', async t => {
 	const readable = new stream.Readable({
-		read() {}
+		read() { }
 	});
 	readable.push('unicorn');
 	setImmediate(() => {

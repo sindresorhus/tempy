@@ -5,6 +5,12 @@ const options: tempy.FileOptions = {}; // eslint-disable-line @typescript-eslint
 expectType<string>(tempy.directory());
 expectType<string>(tempy.directory({prefix: 'name_'}));
 expectType<string>(tempy.file());
+expectType<Promise<void>>(tempy.file.task(temporaryFile => {
+	expectType<string>(temporaryFile);
+}));
+expectType<Promise<void>>(tempy.directory.task(temporaryDirectory => {
+	expectType<string>(temporaryDirectory);
+}));
 expectType<string>(tempy.file({extension: 'png'}));
 expectType<string>(tempy.file({name: 'afile.txt'}));
 expectError(tempy.file({extension: 'png', name: 'afile.txt'}));
@@ -14,6 +20,9 @@ expectType<Promise<string>>(tempy.write('unicorn'));
 expectType<Promise<string>>(tempy.write('unicorn', {name: 'pony.png'}));
 expectType<Promise<string>>(tempy.write(process.stdin, {name: 'pony.png'}));
 expectType<Promise<string>>(tempy.write(Buffer.from('pony'), {name: 'pony.png'}));
+expectType<Promise<void>>(tempy.write.task('', temporaryFile => {
+	expectType<string>(temporaryFile);
+}));
 
 expectType<string>(tempy.writeSync('unicorn'));
 expectType<string>(tempy.writeSync(Buffer.from('unicorn')));
