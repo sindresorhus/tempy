@@ -115,7 +115,6 @@ declare const tempy: {
 	};
 
 	write: {
-
 		/**
 		Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
 
