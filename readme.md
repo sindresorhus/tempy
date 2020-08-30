@@ -53,7 +53,7 @@ Type: `string`
 
 Filename. Mutually exclusive with the `extension` option.
 
-### tempy.directory([options])
+### tempy.directory(options?)
 
 Get a temporary directory path. The directory is created for you.
 
