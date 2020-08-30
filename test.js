@@ -80,7 +80,7 @@ test('.write(buffer)', async t => {
 
 test('.write(stream)', async t => {
 	const readable = new stream.Readable({
-		read() { }
+		read() {}
 	});
 	readable.push('unicorn');
 	readable.push(null);
@@ -90,7 +90,7 @@ test('.write(stream)', async t => {
 
 test('.write(stream) failing stream', async t => {
 	const readable = new stream.Readable({
-		read() { }
+		read() {}
 	});
 	readable.push('unicorn');
 	setImmediate(() => {
