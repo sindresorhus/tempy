@@ -3,26 +3,26 @@ import {MergeExclusive, TypedArray} from 'type-fest';
 
 declare namespace tempy {
 	type FileOptions = MergeExclusive<
-	{
-		/**
-					File extension.
-
-					Mutually exclusive with the `name` option.
-
-					_You usually won't need this option. Specify it only when actually needed._
-					*/
-		readonly extension?: string;
-	},
-	{
-		/**
-					Filename.
-
-					Mutually exclusive with the `extension` option.
-
-					_You usually won't need this option. Specify it only when actually needed._
-					*/
-		readonly name?: string;
-	}
+		{
+			/**
+						File extension.
+	
+						Mutually exclusive with the `name` option.
+	
+						_You usually won't need this option. Specify it only when actually needed._
+						*/
+			readonly extension?: string;
+		},
+		{
+			/**
+						Filename.
+	
+						Mutually exclusive with the `extension` option.
+	
+						_You usually won't need this option. Specify it only when actually needed._
+						*/
+			readonly name?: string;
+		}
 	>;
 
 	type DirectoryOptions = {
@@ -45,7 +45,7 @@ declare namespace tempy {
 declare const tempy: {
 	file: {
 		/**
-		Get a temporary file path you can write through the callback. The file is automatically cleaned up after the callback to executed.
+		The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback to executed.
 
 		@example
 		```
@@ -84,7 +84,7 @@ declare const tempy: {
 
 	directory: {
 		/**
-		Get a temporary directory path. The directory is created for you and is automatically cleaned up after the callback is executed.
+		The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback to executed.
 
 		@example
 		```
@@ -95,7 +95,7 @@ declare const tempy: {
 		})
 		```
 		*/
-		task: (callback: tempy.TaskCallback, options?: tempy.TaskCallback) => Promise<void>;
+		task: (callback: tempy.TaskCallback, options?: tempy.DirectoryOptions) => Promise<void>;
 
 		/**
 		Get a temporary directory path through the callback. The directory is created for you.
