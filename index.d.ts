@@ -52,6 +52,7 @@ declare const tempy: {
 		import tempy = require('tempy');
 
 		await tempy.file.task(tempFile => {
+			console.log(tempFile);
 			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 		});
 		```
@@ -114,7 +115,6 @@ declare const tempy: {
 	};
 
 	write: {
-
 		/**
 		Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
 
