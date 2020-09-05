@@ -107,7 +107,7 @@ Data to write to the temp file.
 
 ##### callback
 
-Type: `(tempPath: string) => any`
+Type: `(tempPath: string) => void`
 
 A callback that is executed with the temp file path.
 
