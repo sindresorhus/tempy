@@ -37,7 +37,7 @@ Get a temporary file path you can write to.
 
 ### tempy.file.task(callback, options?)
 
-The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback to executed.
+The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
 
 #### callback
 
@@ -69,7 +69,7 @@ Get a temporary directory path. The directory is created for you.
 
 ### tempy.directory.task(callback, options?)
 
-The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback to executed.
+The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
 
 ##### callback
 

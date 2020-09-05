@@ -5,22 +5,22 @@ declare namespace tempy {
 	type FileOptions = MergeExclusive<
 	{
 		/**
-						File extension.
+			File extension.
 
-						Mutually exclusive with the `name` option.
+			Mutually exclusive with the `name` option.
 
-						_You usually won't need this option. Specify it only when actually needed._
-						*/
+			_You usually won't need this option. Specify it only when actually needed._
+			*/
 		readonly extension?: string;
 	},
 	{
 		/**
-						Filename.
+			Filename.
 
-						Mutually exclusive with the `extension` option.
+			Mutually exclusive with the `extension` option.
 
-						_You usually won't need this option. Specify it only when actually needed._
-						*/
+			_You usually won't need this option. Specify it only when actually needed._
+			*/
 		readonly name?: string;
 	}
 	>;
@@ -30,7 +30,7 @@ declare namespace tempy {
 		_You usually won't need this option. Specify it only when actually needed._
 
 		Directory prefix.
-
+		
 		Useful for testing by making it easier to identify cache directories that are created.
 		*/
 		readonly prefix?: string;
@@ -45,7 +45,7 @@ declare namespace tempy {
 declare const tempy: {
 	file: {
 		/**
-		The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback to executed.
+		The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
 
 		@example
 		```
@@ -84,7 +84,7 @@ declare const tempy: {
 
 	directory: {
 		/**
-		The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback to executed.
+		The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
 
 		@example
 		```
