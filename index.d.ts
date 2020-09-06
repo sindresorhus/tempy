@@ -37,7 +37,7 @@ declare namespace tempy {
 	};
 
 	/**
-	The path to the temporary object created by the function.
+	The temporary path created by the function.
 	*/
 	type TaskCallback = (tempPath: string) => void;
 }
