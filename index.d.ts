@@ -18,7 +18,7 @@ declare namespace tempy {
 			Filename.
 
 			Mutually exclusive with the `extension` option.
-			
+
 			_You usually won't need this option. Specify it only when actually needed._
 			*/
 		readonly name?: string;
