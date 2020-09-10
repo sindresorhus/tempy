@@ -3,26 +3,26 @@ import {MergeExclusive, TypedArray} from 'type-fest';
 
 declare namespace tempy {
 	type FileOptions = MergeExclusive<
-		{
-			/**
-				File extension.
+	{
+		/**
+			File extension.
 
-				Mutually exclusive with the `name` option.
+			Mutually exclusive with the `name` option.
 
-				_You usually won't need this option. Specify it only when actually needed._
-				*/
-			readonly extension?: string;
-		},
-		{
-			/**
-				Filename.
+			_You usually won't need this option. Specify it only when actually needed._
+			*/
+		readonly extension?: string;
+	},
+	{
+		/**
+			Filename.
 
-				Mutually exclusive with the `extension` option.
-
-				_You usually won't need this option. Specify it only when actually needed._
-				*/
-			readonly name?: string;
-		}
+			Mutually exclusive with the `extension` option.
+			
+			_You usually won't need this option. Specify it only when actually needed._
+			*/
+		readonly name?: string;
+	}
 	>;
 
 	type DirectoryOptions = {
