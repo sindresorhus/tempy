@@ -37,9 +37,9 @@ declare namespace tempy {
 	};
 
 	/**
-	The path to the temporary object created by the function.
+	The path to the temporary object created by the function. Can be asynchronous.
 	*/
-	type TaskCallback = (tempPath: string) => void;
+	type TaskCallback = (tempPath: string) => Promise<void> | void;
 }
 
 declare const tempy: {

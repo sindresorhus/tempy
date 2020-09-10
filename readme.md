@@ -43,7 +43,7 @@ The `callback` resolves with a temporary file path you can write to. The file is
 
 Type: `(tempPath: string) => any`
 
-A callback that is executed with the temp file path.
+A callback that is executed with the temp file path. Can be asynchronous.
 
 #### options
 
@@ -75,7 +75,7 @@ The `callback` resolves with a temporary directory path you can write to. The di
 
 Type: `(tempPath: string) => any`
 
-A callback that is executed with the temp directory path.
+A callback that is executed with the temp directory path. Can be asynchronous.
 
 #### options
 
@@ -109,7 +109,7 @@ Data to write to the temp file.
 
 Type: `(tempPath: string) => void`
 
-A callback that is executed with the temp file path.
+A callback that is executed with the temp file path. Can be asynchronous.
 
 ##### options
 
