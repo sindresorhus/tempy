@@ -46,6 +46,7 @@ declare const tempy: {
 	file: {
 		/**
 		The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
+
 		@returns A promise that resolves after the callback is executed and the file is cleaned up.
 
 		@example
@@ -86,6 +87,7 @@ declare const tempy: {
 	directory: {
 		/**
 		The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
+
 		@returns A promise that resolves after the callback is executed and the directory is cleaned up.
 
 		@example
@@ -119,6 +121,7 @@ declare const tempy: {
 	write: {
 		/**
 		Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
+
 		@returns A promise that resolves after the callback is executed and the file is cleaned up.
 
 		@example
