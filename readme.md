@@ -132,9 +132,3 @@ See [options](#options).
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
-
-## FAQ
-
-#### Why doesn't it have a cleanup method?
-
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`del`](https://github.com/sindresorhus/del) for cleanup.
