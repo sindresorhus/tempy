@@ -52,7 +52,7 @@ test('.directory()', t => {
 
 test('.directory.task()', async t => {
 	let temporaryDirectoryPath;
-	await tempy.file.task(async temporaryDirectory => {
+	await tempy.directory.task(async temporaryDirectory => {
 		await touch(temporaryDirectory);
 		temporaryDirectoryPath = temporaryDirectory;
 	});
