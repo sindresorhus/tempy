@@ -35,6 +35,16 @@ tempy.directory({prefix: 'name'});
 
 Get a temporary file path you can write to.
 
+### tempy.file.task(callback, options?)
+
+The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the file is cleaned up.
+
+#### callback
+
+Type: `(tempPath: string) => void`
+
+A callback that is executed with the temp file path. Can be asynchronous.
+
 #### options
 
 Type: `object`
@@ -57,12 +67,21 @@ Filename. Mutually exclusive with the `extension` option.
 
 Get a temporary directory path. The directory is created for you.
 
+### tempy.directory.task(callback, options?)
+
+The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the directory is cleaned up.
+
+##### callback
+
+Type: `(tempPath: string) => void`
+
+A callback that is executed with the temp directory path. Can be asynchronous.
+
 #### options
 
 Type: `Object`
 
 ##### prefix
-
 
 Type: `string`
 
@@ -76,11 +95,21 @@ Useful for testing by making it easier to identify cache directories that are cr
 
 Write data to a random temp file.
 
+### tempy.write.task(fileContent, callback, options?)
+
+Write data to a random temp file. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the file is cleaned up.
+
 ##### fileContent
 
 Type: `string | Buffer | TypedArray | DataView | stream.Readable`
 
 Data to write to the temp file.
+
+##### callback
+
+Type: `(tempPath: string) => void`
+
+A callback that is executed with the temp file path. Can be asynchronous.
 
 ##### options
 
@@ -103,9 +132,3 @@ See [options](#options).
 ### tempy.root
 
 Get the root temporary directory path. For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`
-
-## FAQ
-
-#### Why doesn't it have a cleanup method?
-
-Temp files will be periodically cleaned up on macOS. Most Linux distros will clean up on reboot. If you're generating a lot of temp files, it's recommended to use a complementary module like [`del`](https://github.com/sindresorhus/del) for cleanup.
