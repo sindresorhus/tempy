@@ -35,7 +35,7 @@
 		"unique"
 	],
 	"dependencies": {
-		"del": "^5.1.0",
+		"del": "^6.0.0",
 		"is-stream": "^2.0.0",
 		"temp-dir": "^2.0.0",
 		"type-fest": "^0.16.0",
@@ -46,7 +46,7 @@
 		"path-exists": "^4.0.0",
 		"touch": "^3.1.0",
 		"tsd": "^0.13.1",
-		"xo": "^0.32.1"
+		"xo": "^0.33.1"
 	},
 	"xo": {
 		"rules": {
