@@ -36,10 +36,11 @@ test('.file()', t => {
 
 test('.file.task()', async t => {
 	let temporaryFilePath;
-	await tempy.file.task(async temporaryFile => {
+	t.is(await tempy.file.task(async temporaryFile => {
 		await touch(temporaryFile);
 		temporaryFilePath = temporaryFile;
-	});
+		return temporaryFile;
+	}), temporaryFilePath);
 	t.false(await pathExists(temporaryFilePath));
 });
 
@@ -52,9 +53,10 @@ test('.directory()', t => {
 
 test('.directory.task()', async t => {
 	let temporaryDirectoryPath;
-	await tempy.directory.task(async temporaryDirectory => {
+	t.is(await tempy.directory.task(async temporaryDirectory => {
 		temporaryDirectoryPath = temporaryDirectory;
-	});
+		return temporaryDirectory;
+	}), temporaryDirectoryPath);
 	t.false(await pathExists(temporaryDirectoryPath));
 });
 
@@ -66,9 +68,10 @@ test('.write(string)', async t => {
 
 test('.write.task(string)', async t => {
 	let temporaryFilePath;
-	await tempy.write.task('', async temporaryFile => {
+	t.is(await tempy.write.task('', async temporaryFile => {
 		temporaryFilePath = temporaryFile;
-	});
+		return temporaryFile;
+	}), temporaryFilePath);
 	t.false(await pathExists(temporaryFilePath));
 });
 

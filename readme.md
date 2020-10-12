@@ -37,7 +37,7 @@ Get a temporary file path you can write to.
 
 ### tempy.file.task(callback, options?)
 
-The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the file is cleaned up.
+The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves with the return value of the callback after it is executed and the file is cleaned up.
 
 #### callback
 
@@ -69,7 +69,7 @@ Get a temporary directory path. The directory is created for you.
 
 ### tempy.directory.task(callback, options?)
 
-The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the directory is cleaned up.
+The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed. Returns a promise that resolves with the return value of the callback after it is executed and the directory is cleaned up.
 
 ##### callback
 
@@ -97,7 +97,7 @@ Write data to a random temp file.
 
 ### tempy.write.task(fileContent, callback, options?)
 
-Write data to a random temp file. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves after the callback is executed and the file is cleaned up.
+Write data to a random temp file. The file is automatically cleaned up after the callback is executed. Returns a promise that resolves with the return value of the callback after it is executed and the file is cleaned up.
 
 ##### fileContent
 

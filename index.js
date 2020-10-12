@@ -18,8 +18,9 @@ const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStrea
 const createTask = (tempyFunction, {extraArguments = 0} = {}) => async (...arguments_) => {
 	const [callback, options] = arguments_.slice(extraArguments);
 	const result = await tempyFunction(...arguments_.slice(0, extraArguments), options);
-	await callback(result);
+	const returnValue = await callback(result);
 	await del(result, {force: true});
+	return returnValue;
 };
 
 module.exports.file = options => {
