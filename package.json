@@ -1,6 +1,6 @@
 {
 	"name": "tempy",
-	"version": "0.7.1",
+	"version": "1.0.0",
 	"description": "Get a random temporary file or directory path",
 	"license": "MIT",
 	"repository": "sindresorhus/tempy",
