@@ -39,7 +39,7 @@ declare namespace tempy {
 	/**
 	The temporary path created by the function. Can be asynchronous.
 	*/
-	type TaskCallback = (tempPath: string) => Promise<void> | void;
+	type TaskCallback<ReturnValueType> = (tempPath: string) => Promise<ReturnValueType> | ReturnValueType;
 }
 
 declare const tempy: {
@@ -59,7 +59,7 @@ declare const tempy: {
 		});
 		```
 		*/
-		task: (callback: tempy.TaskCallback, options?: tempy.FileOptions) => Promise<void>;
+		task: <ReturnValueType>(callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.FileOptions) => Promise<ReturnValueType>;
 
 		/**
 		Get a temporary file path you can write to.
@@ -99,7 +99,7 @@ declare const tempy: {
 		})
 		```
 		*/
-		task: (callback: tempy.TaskCallback, options?: tempy.DirectoryOptions) => Promise<void>;
+		task: <ReturnValueType>(callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.DirectoryOptions) => Promise<ReturnValueType>;
 
 		/**
 		Get a temporary directory path. The directory is created for you.
@@ -133,7 +133,7 @@ declare const tempy: {
 		});
 		```
 		*/
-		task: (fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: tempy.TaskCallback, options?: tempy.FileOptions) => Promise<void>;
+		task: <ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.FileOptions) => Promise<ReturnValueType>;
 
 		/**
 		Write data to a random temp file.
