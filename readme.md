@@ -1,4 +1,4 @@
-# tempy [![Build Status](https://travis-ci.com/sindresorhus/tempy.svg?branch=master)](https://travis-ci.com/github/sindresorhus/tempy)
+# tempy
 
 > Get a random temporary file or directory path
 
