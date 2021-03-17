@@ -44,7 +44,7 @@ test('.file.task()', async t => {
 	t.false(await pathExists(temporaryFilePath));
 });
 
-test('.task() error', async t => {
+test('.task() - cleans up even if callback throws', async t => {
 	let temporaryDirectoryPath;
 	await t.throwsAsync(tempy.directory.task(async temporaryDirectory => {
 		temporaryDirectoryPath = temporaryDirectory;
