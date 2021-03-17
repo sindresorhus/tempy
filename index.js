@@ -19,16 +19,11 @@ const createTask = (tempyFunction, {extraArguments = 0} = {}) => async (...argum
 	const [callback, options] = arguments_.slice(extraArguments);
 	const result = await tempyFunction(...arguments_.slice(0, extraArguments), options);
 
-	let returnValue;
 	try {
-		returnValue = await callback(result);
-	} catch (error) {
+		return await callback(result);
+	} finally {
 		await del(result, {force: true});
-		throw error;
 	}
-
-	await del(result, {force: true});
-	return returnValue;
 };
 
 module.exports.file = options => {
