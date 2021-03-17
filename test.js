@@ -44,6 +44,19 @@ test('.file.task()', async t => {
 	t.false(await pathExists(temporaryFilePath));
 });
 
+test('.task() error', async t => {
+	let temporaryDirectoryPath;
+	await t.throwsAsync(tempy.directory.task(async temporaryDirectory => {
+		temporaryDirectoryPath = temporaryDirectory;
+		throw new Error('Catch me if you can!');
+	}), {
+		instanceOf: Error,
+		message: 'Catch me if you can!'
+	});
+
+	t.false(await pathExists(temporaryDirectoryPath));
+});
+
 test('.directory()', t => {
 	const prefix = 'name_';
 
