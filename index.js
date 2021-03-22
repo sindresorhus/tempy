@@ -39,7 +39,7 @@ module.exports.file = options => {
 		return path.join(module.exports.directory(), options.name);
 	}
 
-	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
+	return getPath(options.prefix || '') + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
 module.exports.file.task = createTask(module.exports.file);
