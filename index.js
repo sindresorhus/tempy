@@ -11,7 +11,7 @@ const {promisify} = require('util');
 const pipeline = promisify(stream.pipeline);
 const {writeFile} = fs.promises;
 
-const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
+const getPath = (prefix = '') => path.join(root, prefix + uniqueString());
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
@@ -67,8 +67,12 @@ module.exports.writeSync = (data, options) => {
 	return filename;
 };
 
+let root = tempDir;
 Object.defineProperty(module.exports, 'root', {
 	get() {
-		return tempDir;
+		return root;
+	},
+	set(given) {
+		root = path.join(tempDir, given);
 	}
 });

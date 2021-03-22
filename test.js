@@ -126,7 +126,7 @@ test('.root', t => {
 	t.true(tempy.root.length > 0);
 	t.true(path.isAbsolute(tempy.root));
 
-	t.throws(() => {
-		tempy.root = 'foo';
-	});
+	const tempdir = tempy.root;
+	tempy.root = 'foo';
+	t.is(tempy.root, path.join(tempdir, 'foo'));
 });
