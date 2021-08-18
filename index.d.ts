@@ -1,46 +1,45 @@
-/// <reference types="node"/>
+/* eslint-disable @typescript-eslint/member-ordering */
+import {Buffer} from 'node:buffer';
 import {MergeExclusive, TypedArray} from 'type-fest';
 
-declare namespace tempy {
-	type FileOptions = MergeExclusive<
-	{
-		/**
-			File extension.
-
-			Mutually exclusive with the `name` option.
-
-			_You usually won't need this option. Specify it only when actually needed._
-			*/
-		readonly extension?: string;
-	},
-	{
-		/**
-			Filename.
-
-			Mutually exclusive with the `extension` option.
-
-			_You usually won't need this option. Specify it only when actually needed._
-			*/
-		readonly name?: string;
-	}
-	>;
-
-	type DirectoryOptions = {
-		/**
-		_You usually won't need this option. Specify it only when actually needed._
-
-		Directory prefix.
-
-		Useful for testing by making it easier to identify cache directories that are created.
-		*/
-		readonly prefix?: string;
-	};
-
+export type FileOptions = MergeExclusive<
+{
 	/**
-	The temporary path created by the function. Can be asynchronous.
+	File extension.
+
+	Mutually exclusive with the `name` option.
+
+	_You usually won't need this option. Specify it only when actually needed._
 	*/
-	type TaskCallback<ReturnValueType> = (tempPath: string) => Promise<ReturnValueType> | ReturnValueType;
+	readonly extension?: string;
+},
+{
+	/**
+	Filename.
+
+	Mutually exclusive with the `extension` option.
+
+	_You usually won't need this option. Specify it only when actually needed._
+	*/
+	readonly name?: string;
 }
+>;
+
+export type DirectoryOptions = {
+	/**
+	Directory prefix.
+
+	_You usually won't need this option. Specify it only when actually needed._
+
+	Useful for testing by making it easier to identify cache directories that are created.
+	*/
+	readonly prefix?: string;
+};
+
+/**
+The temporary path created by the function. Can be asynchronous.
+*/
+export type TaskCallback<ReturnValueType> = (temporaryPath: string) => Promise<ReturnValueType> | ReturnValueType;
 
 declare const tempy: {
 	file: {
@@ -51,7 +50,7 @@ declare const tempy: {
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		await tempy.file.task(tempFile => {
 			console.log(tempFile);
@@ -59,14 +58,14 @@ declare const tempy: {
 		});
 		```
 		*/
-		task: <ReturnValueType>(callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.FileOptions) => Promise<ReturnValueType>;
+		task: <ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: FileOptions) => Promise<ReturnValueType>;
 
 		/**
 		Get a temporary file path you can write to.
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		tempy.file();
 		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
@@ -81,7 +80,7 @@ declare const tempy: {
 		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 		```
 		*/
-		(options?: tempy.FileOptions): string;
+		(options?: FileOptions): string;
 	};
 
 	directory: {
@@ -92,21 +91,21 @@ declare const tempy: {
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		await tempy.directory.task(tempDirectory => {
 			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 		})
 		```
 		*/
-		task: <ReturnValueType>(callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.DirectoryOptions) => Promise<ReturnValueType>;
+		task: <ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: DirectoryOptions) => Promise<ReturnValueType>;
 
 		/**
 		Get a temporary directory path. The directory is created for you.
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		tempy.directory();
 		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
@@ -115,7 +114,7 @@ declare const tempy: {
 		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 		```
 		*/
-		(options?: tempy.DirectoryOptions): string;
+		(options?: DirectoryOptions): string;
 	};
 
 	write: {
@@ -126,27 +125,27 @@ declare const tempy: {
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		await tempy.write.task('🦄', tempFile => {
 			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 		});
 		```
 		*/
-		task: <ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: tempy.TaskCallback<ReturnValueType>, options?: tempy.FileOptions) => Promise<ReturnValueType>;
+		task: <ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: TaskCallback<ReturnValueType>, options?: FileOptions) => Promise<ReturnValueType>;
 
 		/**
 		Write data to a random temp file.
 
 		@example
 		```
-		import tempy = require('tempy');
+		import tempy from 'tempy';
 
 		await tempy.write('🦄');
 		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 		```
 		*/
-		(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: tempy.FileOptions): Promise<string>;
+		(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: FileOptions): Promise<string>;
 	};
 
 	/**
@@ -154,13 +153,13 @@ declare const tempy: {
 
 	@example
 	```
-	import tempy = require('tempy');
+	import tempy from 'tempy';
 
 	tempy.writeSync('🦄');
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 	```
 	*/
-	writeSync: (fileContent: string | Buffer | TypedArray | DataView, options?: tempy.FileOptions) => string;
+	writeSync: (fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions) => string;
 
 	/**
 	Get the root temporary directory path.
@@ -170,4 +169,4 @@ declare const tempy: {
 	readonly root: string;
 };
 
-export = tempy;
+export default tempy;

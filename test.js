@@ -1,11 +1,12 @@
-import path from 'path';
+import {Buffer} from 'node:buffer';
+import path from 'node:path';
+import fs from 'node:fs';
+import stream from 'node:stream';
 import tempDir from 'temp-dir';
-import pathExists from 'path-exists';
+import {pathExists} from 'path-exists';
 import touch from 'touch';
-import fs from 'fs';
-import stream from 'stream';
 import test from 'ava';
-import tempy from '.';
+import tempy from './index.js';
 
 test('.file()', t => {
 	t.true(tempy.file().includes(tempDir));
@@ -51,7 +52,7 @@ test('.task() - cleans up even if callback throws', async t => {
 		throw new Error('Catch me if you can!');
 	}), {
 		instanceOf: Error,
-		message: 'Catch me if you can!'
+		message: 'Catch me if you can!',
 	});
 
 	t.false(await pathExists(temporaryDirectoryPath));
@@ -95,26 +96,30 @@ test('.write(buffer)', async t => {
 
 test('.write(stream)', async t => {
 	const readable = new stream.Readable({
-		read() {}
+		read() {},
 	});
 	readable.push('unicorn');
-	readable.push(null);
+	readable.push(null); // eslint-disable-line unicorn/no-array-push-push
+
 	const filePath = await tempy.write(readable);
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 });
 
 test('.write(stream) failing stream', async t => {
 	const readable = new stream.Readable({
-		read() {}
+		read() {},
 	});
+
 	readable.push('unicorn');
+
 	setImmediate(() => {
 		readable.emit('error', new Error('Catch me if you can!'));
 		readable.push(null);
 	});
-	await t.throwsAsync(() => tempy.write(readable), {
+
+	await t.throwsAsync(tempy.write(readable), {
 		instanceOf: Error,
-		message: 'Catch me if you can!'
+		message: 'Catch me if you can!',
 	});
 });
 

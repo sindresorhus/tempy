@@ -1,15 +1,13 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const uniqueString = require('unique-string');
-const tempDir = require('temp-dir');
-const isStream = require('is-stream');
-const del = require('del');
-const stream = require('stream');
-const {promisify} = require('util');
+import fs, {promises as fsPromises} from 'node:fs';
+import path from 'node:path';
+import stream from 'node:stream';
+import {promisify} from 'node:util';
+import uniqueString from 'unique-string';
+import tempDir from 'temp-dir';
+import {isStream} from 'is-stream';
+import del from 'del'; // TODO: Replace this with `fs.rm` when targeting Node.js 14.
 
-const pipeline = promisify(stream.pipeline);
-const {writeFile} = fs.promises;
+const pipeline = promisify(stream.pipeline); // TODO: Use `node:stream/promises` when targeting Node.js 16.
 
 const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
 
@@ -26,9 +24,11 @@ const createTask = (tempyFunction, {extraArguments = 0} = {}) => async (...argum
 	}
 };
 
-module.exports.file = options => {
+const tempy = {};
+
+tempy.file = options => {
 	options = {
-		...options
+		...options,
 	};
 
 	if (options.name) {
@@ -36,39 +36,41 @@ module.exports.file = options => {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(module.exports.directory(), options.name);
+		return path.join(tempy.directory(), options.name);
 	}
 
 	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
 };
 
-module.exports.file.task = createTask(module.exports.file);
+tempy.file.task = createTask(tempy.file);
 
-module.exports.directory = ({prefix = ''} = {}) => {
+tempy.directory = ({prefix = ''} = {}) => {
 	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
 };
 
-module.exports.directory.task = createTask(module.exports.directory);
+tempy.directory.task = createTask(tempy.directory);
 
-module.exports.write = async (data, options) => {
-	const filename = module.exports.file(options);
-	const write = isStream(data) ? writeStream : writeFile;
+tempy.write = async (data, options) => {
+	const filename = tempy.file(options);
+	const write = isStream(data) ? writeStream : fsPromises.writeFile;
 	await write(filename, data);
 	return filename;
 };
 
-module.exports.write.task = createTask(module.exports.write, {extraArguments: 1});
+tempy.write.task = createTask(tempy.write, {extraArguments: 1});
 
-module.exports.writeSync = (data, options) => {
-	const filename = module.exports.file(options);
+tempy.writeSync = (data, options) => {
+	const filename = tempy.file(options);
 	fs.writeFileSync(filename, data);
 	return filename;
 };
 
-Object.defineProperty(module.exports, 'root', {
+Object.defineProperty(tempy, 'root', {
 	get() {
 		return tempDir;
-	}
+	},
 });
+
+export default tempy;

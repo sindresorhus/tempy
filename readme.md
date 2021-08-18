@@ -11,7 +11,7 @@ $ npm install tempy
 ## Usage
 
 ```js
-const tempy = require('tempy');
+import tempy from 'tempy';
 
 tempy.file();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
