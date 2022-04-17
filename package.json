@@ -13,7 +13,7 @@
 	"type": "module",
 	"exports": "./index.js",
 	"engines": {
-		"node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+		"node": ">=14.14"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -37,17 +37,17 @@
 		"unique"
 	],
 	"dependencies": {
-		"del": "^6.0.0",
 		"is-stream": "^3.0.0",
 		"temp-dir": "^2.0.0",
-		"type-fest": "^2.0.0",
+		"type-fest": "^2.12.2",
 		"unique-string": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^4.0.0-alpha.2",
+		"@types/node": "^17.0.24",
+		"ava": "^4.2.0",
 		"path-exists": "^5.0.0",
 		"touch": "^3.1.0",
-		"tsd": "^0.17.0",
-		"xo": "^0.44.0"
+		"tsd": "^0.20.0",
+		"xo": "^0.48.0"
 	}
 }

@@ -5,7 +5,6 @@ import {promisify} from 'node:util';
 import uniqueString from 'unique-string';
 import tempDir from 'temp-dir';
 import {isStream} from 'is-stream';
-import del from 'del'; // TODO: Replace this with `fs.rm` when targeting Node.js 14.
 
 const pipeline = promisify(stream.pipeline); // TODO: Use `node:stream/promises` when targeting Node.js 16.
 
@@ -13,64 +12,49 @@ const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
-const createTask = (tempyFunction, {extraArguments = 0} = {}) => async (...arguments_) => {
-	const [callback, options] = arguments_.slice(extraArguments);
-	const result = await tempyFunction(...arguments_.slice(0, extraArguments), options);
-
+async function runTask(temporaryPath, callback) {
 	try {
-		return await callback(result);
+		return await callback(temporaryPath);
 	} finally {
-		await del(result, {force: true});
+		await fsPromises.rm(temporaryPath, {recursive: true, force: true});
 	}
-};
+}
 
-const tempy = {};
-
-tempy.file = options => {
-	options = {
-		...options,
-	};
-
-	if (options.name) {
-		if (options.extension !== undefined && options.extension !== null) {
+export function tempyFile({name, extension} = {}) {
+	if (name) {
+		if (extension !== undefined && extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(tempy.directory(), options.name);
+		return path.join(tempyDirectory(), name);
 	}
 
-	return getPath() + (options.extension === undefined || options.extension === null ? '' : '.' + options.extension.replace(/^\./, ''));
-};
+	return getPath() + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
+}
 
-tempy.file.task = createTask(tempy.file);
+export const tempyFileTask = async (callback, options) => runTask(tempyFile(options), callback);
 
-tempy.directory = ({prefix = ''} = {}) => {
+export function tempyDirectory({prefix = ''} = {}) {
 	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
-};
+}
 
-tempy.directory.task = createTask(tempy.directory);
+export const tempyDirectoryTask = async (callback, options) => runTask(tempyDirectory(options), callback);
 
-tempy.write = async (data, options) => {
-	const filename = tempy.file(options);
-	const write = isStream(data) ? writeStream : fsPromises.writeFile;
-	await write(filename, data);
+export async function tempyWrite(fileContent, options) {
+	const filename = tempyFile(options);
+	const write = isStream(fileContent) ? writeStream : fsPromises.writeFile;
+	await write(filename, fileContent);
 	return filename;
-};
+}
 
-tempy.write.task = createTask(tempy.write, {extraArguments: 1});
+export const tempyWriteTask = async (fileContent, callback, options) => runTask(await tempyWrite(fileContent, options), callback);
 
-tempy.writeSync = (data, options) => {
-	const filename = tempy.file(options);
-	fs.writeFileSync(filename, data);
+export function tempyWriteSync(fileContent, options) {
+	const filename = tempyFile(options);
+	fs.writeFileSync(filename, fileContent);
 	return filename;
-};
+}
 
-Object.defineProperty(tempy, 'root', {
-	get() {
-		return tempDir;
-	},
-});
-
-export default tempy;
+export {default as tempyRoot} from 'temp-dir';
