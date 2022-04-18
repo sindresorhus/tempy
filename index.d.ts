@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import {Buffer} from 'node:buffer';
 import {MergeExclusive, TypedArray} from 'type-fest';
 
@@ -41,132 +40,117 @@ The temporary path created by the function. Can be asynchronous.
 */
 export type TaskCallback<ReturnValueType> = (temporaryPath: string) => Promise<ReturnValueType> | ReturnValueType;
 
-declare const tempy: {
-	file: {
-		/**
-		The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
+/**
+Get a temporary file path you can write to.
 
-		@returns A promise that resolves after the callback is executed and the file is cleaned up.
+@example
+```
+import {temporaryFile, temporaryDirectory} from 'tempy';
 
-		@example
-		```
-		import tempy from 'tempy';
+temporaryFile();
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 
-		await tempy.file.task(tempFile => {
-			console.log(tempFile);
-			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
-		});
-		```
-		*/
-		task: <ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: FileOptions) => Promise<ReturnValueType>;
+temporaryFile({extension: 'png'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
 
-		/**
-		Get a temporary file path you can write to.
+temporaryFile({name: 'unicorn.png'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
 
-		@example
-		```
-		import tempy from 'tempy';
+temporaryDirectory();
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+```
+*/
+export function temporaryFile(options?: FileOptions): string;
 
-		tempy.file();
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+/**
+The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
 
-		tempy.file({extension: 'png'});
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
+@returns A promise that resolves after the callback is executed and the file is cleaned up.
 
-		tempy.file({name: 'unicorn.png'});
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
+@example
+```
+import {temporaryFileTask} from 'tempy';
 
-		tempy.directory();
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-		```
-		*/
-		(options?: FileOptions): string;
-	};
+await temporaryFileTask(tempFile => {
+	console.log(tempFile);
+	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+});
+```
+*/
+export function temporaryFileTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise <ReturnValueType>;
 
-	directory: {
-		/**
-		The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
+/**
+Get a temporary directory path. The directory is created for you.
 
-		@returns A promise that resolves after the callback is executed and the directory is cleaned up.
+@example
+```
+import {temporaryDirectory} from 'tempy';
 
-		@example
-		```
-		import tempy from 'tempy';
+temporaryDirectory();
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 
-		await tempy.directory.task(tempDirectory => {
-			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-		})
-		```
-		*/
-		task: <ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: DirectoryOptions) => Promise<ReturnValueType>;
+temporaryDirectory({prefix: 'a'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
+```
+*/
+export function temporaryDirectory(options?: DirectoryOptions): string;
 
-		/**
-		Get a temporary directory path. The directory is created for you.
+/**
+The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
 
-		@example
-		```
-		import tempy from 'tempy';
+@returns A promise that resolves after the callback is executed and the directory is cleaned up.
 
-		tempy.directory();
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+@example
+```
+import {temporaryDirectoryTask} from 'tempy';
 
-		tempy.directory({prefix: 'a'});
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
-		```
-		*/
-		(options?: DirectoryOptions): string;
-	};
-
-	write: {
-		/**
-		Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
-
-		@returns A promise that resolves after the callback is executed and the file is cleaned up.
-
-		@example
-		```
-		import tempy from 'tempy';
-
-		await tempy.write.task('🦄', tempFile => {
-			//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
-		});
-		```
-		*/
-		task: <ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: TaskCallback<ReturnValueType>, options?: FileOptions) => Promise<ReturnValueType>;
-
-		/**
-		Write data to a random temp file.
-
-		@example
-		```
-		import tempy from 'tempy';
-
-		await tempy.write('🦄');
-		//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-		```
-		*/
-		(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: FileOptions): Promise<string>;
-	};
-
-	/**
-	Synchronously write data to a random temp file.
-
-	@example
-	```
-	import tempy from 'tempy';
-
-	tempy.writeSync('🦄');
+await temporaryDirectoryTask(tempDirectory => {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
-	```
-	*/
-	writeSync: (fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions) => string;
+})
+```
+*/
+export function temporaryDirectoryTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: DirectoryOptions): Promise<ReturnValueType>;
 
-	/**
-	Get the root temporary directory path.
+/**
+Write data to a random temp file.
 
-	For example: `/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T`.
-	*/
-	readonly root: string;
-};
+@example
+```
+import {temporaryWrite} from 'tempy';
 
-export default tempy;
+await temporaryWrite('🦄');
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+```
+*/
+export function temporaryWrite(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: FileOptions): Promise<string>;
+
+/**
+Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
+
+@returns A promise that resolves after the callback is executed and the file is cleaned up.
+
+@example
+```
+import {temporaryWriteTask} from 'tempy';
+
+await temporaryWriteTask('🦄', tempFile => {
+	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
+});
+```
+*/
+export function temporaryWriteTask<ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise<ReturnValueType>;
+
+/**
+Synchronously write data to a random temp file.
+
+@example
+```
+import {temporaryWriteSync} from 'tempy';
+
+temporaryWriteSync('🦄');
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
+```
+*/
+export function temporaryWriteSync(fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions): string;
+
+export {default as rootTemporaryDirectory} from 'temp-dir';
