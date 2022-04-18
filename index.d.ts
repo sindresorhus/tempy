@@ -45,22 +45,22 @@ Get a temporary file path you can write to.
 
 @example
 ```
-import {tempyFile, tempyDirectory} from 'tempy';
+import {temporaryFile, temporaryDirectory} from 'tempy';
 
-tempyFile();
+temporaryFile();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 
-tempyFile({extension: 'png'});
+temporaryFile({extension: 'png'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/a9fb0decd08179eb6cf4691568aa2018.png'
 
-tempyFile({name: 'unicorn.png'});
+temporaryFile({name: 'unicorn.png'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/f7f62bfd4e2a05f1589947647ed3f9ec/unicorn.png'
 
-tempyDirectory();
+temporaryDirectory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 ```
 */
-export function tempyFile(options?: FileOptions): string;
+export function temporaryFile(options?: FileOptions): string;
 
 /**
 The `callback` resolves with a temporary file path you can write to. The file is automatically cleaned up after the callback is executed.
@@ -69,31 +69,31 @@ The `callback` resolves with a temporary file path you can write to. The file is
 
 @example
 ```
-import {tempyFileTask} from 'tempy';
+import {temporaryFileTask} from 'tempy';
 
-await tempyFileTask(tempFile => {
+await temporaryFileTask(tempFile => {
 	console.log(tempFile);
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 });
 ```
 */
-export function tempyFileTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise <ReturnValueType>;
+export function temporaryFileTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise <ReturnValueType>;
 
 /**
 Get a temporary directory path. The directory is created for you.
 
 @example
 ```
-import {tempyDirectory} from 'tempy';
+import {temporaryDirectory} from 'tempy';
 
-tempyDirectory();
+temporaryDirectory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 
-tempyDirectory({prefix: 'a'});
+temporaryDirectory({prefix: 'a'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 ```
 */
-export function tempyDirectory(options?: DirectoryOptions): string;
+export function temporaryDirectory(options?: DirectoryOptions): string;
 
 /**
 The `callback` resolves with a temporary directory path you can write to. The directory is automatically cleaned up after the callback is executed.
@@ -102,27 +102,27 @@ The `callback` resolves with a temporary directory path you can write to. The di
 
 @example
 ```
-import {tempyDirectoryTask} from 'tempy';
+import {temporaryDirectoryTask} from 'tempy';
 
-await tempyDirectoryTask(tempDirectory => {
+await temporaryDirectoryTask(tempDirectory => {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 })
 ```
 */
-export function tempyDirectoryTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: DirectoryOptions): Promise<ReturnValueType>;
+export function temporaryDirectoryTask<ReturnValueType>(callback: TaskCallback<ReturnValueType>, options?: DirectoryOptions): Promise<ReturnValueType>;
 
 /**
 Write data to a random temp file.
 
 @example
 ```
-import {tempyWrite} from 'tempy';
+import {temporaryWrite} from 'tempy';
 
-await tempyWrite('🦄');
+await temporaryWrite('🦄');
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 ```
 */
-export function tempyWrite(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: FileOptions): Promise<string>;
+export function temporaryWrite(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, options?: FileOptions): Promise<string>;
 
 /**
 Write data to a random temp file. The file is automatically cleaned up after the callback is executed.
@@ -131,26 +131,26 @@ Write data to a random temp file. The file is automatically cleaned up after the
 
 @example
 ```
-import {tempyWriteTask} from 'tempy';
+import {temporaryWriteTask} from 'tempy';
 
-await tempyWriteTask('🦄', tempFile => {
+await temporaryWriteTask('🦄', tempFile => {
 	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/4f504b9edb5ba0e89451617bf9f971dd'
 });
 ```
 */
-export function tempyWriteTask<ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise<ReturnValueType>;
+export function temporaryWriteTask<ReturnValueType>(fileContent: string | Buffer | TypedArray | DataView | NodeJS.ReadableStream, callback: TaskCallback<ReturnValueType>, options?: FileOptions): Promise<ReturnValueType>;
 
 /**
 Synchronously write data to a random temp file.
 
 @example
 ```
-import {tempyWriteSync} from 'tempy';
+import {temporaryWriteSync} from 'tempy';
 
-tempyWriteSync('🦄');
+temporaryWriteSync('🦄');
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 ```
 */
-export function tempyWriteSync(fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions): string;
+export function temporaryWriteSync(fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions): string;
 
-export {default as tempyRoot} from 'temp-dir';
+export {default as temporaryRoot} from 'temp-dir';

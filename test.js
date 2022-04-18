@@ -6,38 +6,38 @@ import tempDir from 'temp-dir';
 import {pathExists} from 'path-exists';
 import touch from 'touch';
 import test from 'ava';
-import {tempyFile, tempyFileTask, tempyDirectory, tempyDirectoryTask, tempyWrite, tempyWriteTask, tempyWriteSync, tempyRoot} from './index.js';
+import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, temporaryRoot} from './index.js';
 
 test('.file()', t => {
-	t.true(tempyFile().includes(tempDir));
-	t.false(tempyFile().endsWith('.'));
-	t.false(tempyFile({extension: undefined}).endsWith('.'));
-	t.false(tempyFile({extension: null}).endsWith('.'));
-	t.true(tempyFile({extension: 'png'}).endsWith('.png'));
-	t.true(tempyFile({extension: '.png'}).endsWith('.png'));
-	t.false(tempyFile({extension: '.png'}).endsWith('..png'));
-	t.true(tempyFile({name: 'custom-name.md'}).endsWith('custom-name.md'));
+	t.true(temporaryFile().includes(tempDir));
+	t.false(temporaryFile().endsWith('.'));
+	t.false(temporaryFile({extension: undefined}).endsWith('.'));
+	t.false(temporaryFile({extension: null}).endsWith('.'));
+	t.true(temporaryFile({extension: 'png'}).endsWith('.png'));
+	t.true(temporaryFile({extension: '.png'}).endsWith('.png'));
+	t.false(temporaryFile({extension: '.png'}).endsWith('..png'));
+	t.true(temporaryFile({name: 'custom-name.md'}).endsWith('custom-name.md'));
 
 	t.throws(() => {
-		tempyFile({name: 'custom-name.md', extension: '.ext'});
+		temporaryFile({name: 'custom-name.md', extension: '.ext'});
 	});
 
 	t.throws(() => {
-		tempyFile({name: 'custom-name.md', extension: ''});
+		temporaryFile({name: 'custom-name.md', extension: ''});
 	});
 
 	t.notThrows(() => {
-		tempyFile({name: 'custom-name.md', extension: undefined});
+		temporaryFile({name: 'custom-name.md', extension: undefined});
 	});
 
 	t.notThrows(() => {
-		tempyFile({name: 'custom-name.md', extension: null});
+		temporaryFile({name: 'custom-name.md', extension: null});
 	});
 });
 
 test('.file.task()', async t => {
 	let temporaryFilePath;
-	t.is(await tempyFileTask(async temporaryFile => {
+	t.is(await temporaryFileTask(async temporaryFile => {
 		await touch(temporaryFile);
 		temporaryFilePath = temporaryFile;
 		return temporaryFile;
@@ -47,7 +47,7 @@ test('.file.task()', async t => {
 
 test('.task() - cleans up even if callback throws', async t => {
 	let temporaryDirectoryPath;
-	await t.throwsAsync(tempyDirectoryTask(async temporaryDirectory => {
+	await t.throwsAsync(temporaryDirectoryTask(async temporaryDirectory => {
 		temporaryDirectoryPath = temporaryDirectory;
 		throw new Error('Catch me if you can!');
 	}), {
@@ -61,13 +61,13 @@ test('.task() - cleans up even if callback throws', async t => {
 test('.directory()', t => {
 	const prefix = 'name_';
 
-	t.true(tempyDirectory().includes(tempDir));
-	t.true(path.basename(tempyDirectory({prefix})).startsWith(prefix));
+	t.true(temporaryDirectory().includes(tempDir));
+	t.true(path.basename(temporaryDirectory({prefix})).startsWith(prefix));
 });
 
 test('.directory.task()', async t => {
 	let temporaryDirectoryPath;
-	t.is(await tempyDirectoryTask(async temporaryDirectory => {
+	t.is(await temporaryDirectoryTask(async temporaryDirectory => {
 		temporaryDirectoryPath = temporaryDirectory;
 		return temporaryDirectory;
 	}), temporaryDirectoryPath);
@@ -75,14 +75,14 @@ test('.directory.task()', async t => {
 });
 
 test('.write(string)', async t => {
-	const filePath = await tempyWrite('unicorn', {name: 'test.png'});
+	const filePath = await temporaryWrite('unicorn', {name: 'test.png'});
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 	t.is(path.basename(filePath), 'test.png');
 });
 
 test('.write.task(string)', async t => {
 	let temporaryFilePath;
-	t.is(await tempyWriteTask('', async temporaryFile => {
+	t.is(await temporaryWriteTask('', async temporaryFile => {
 		temporaryFilePath = temporaryFile;
 		return temporaryFile;
 	}), temporaryFilePath);
@@ -90,7 +90,7 @@ test('.write.task(string)', async t => {
 });
 
 test('.write(buffer)', async t => {
-	const filePath = await tempyWrite(Buffer.from('unicorn'));
+	const filePath = await temporaryWrite(Buffer.from('unicorn'));
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 });
 
@@ -101,7 +101,7 @@ test('.write(stream)', async t => {
 	readable.push('unicorn');
 	readable.push(null); // eslint-disable-line unicorn/no-array-push-push
 
-	const filePath = await tempyWrite(readable);
+	const filePath = await temporaryWrite(readable);
 	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
 });
 
@@ -117,17 +117,17 @@ test('.write(stream) failing stream', async t => {
 		readable.push(null);
 	});
 
-	await t.throwsAsync(tempyWrite(readable), {
+	await t.throwsAsync(temporaryWrite(readable), {
 		instanceOf: Error,
 		message: 'Catch me if you can!',
 	});
 });
 
 test('.writeSync()', t => {
-	t.is(fs.readFileSync(tempyWriteSync('unicorn'), 'utf8'), 'unicorn');
+	t.is(fs.readFileSync(temporaryWriteSync('unicorn'), 'utf8'), 'unicorn');
 });
 
 test('.root', t => {
-	t.true(tempyRoot.length > 0);
-	t.true(path.isAbsolute(tempyRoot));
+	t.true(temporaryRoot.length > 0);
+	t.true(path.isAbsolute(temporaryRoot));
 });

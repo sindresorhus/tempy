@@ -20,41 +20,41 @@ async function runTask(temporaryPath, callback) {
 	}
 }
 
-export function tempyFile({name, extension} = {}) {
+export function temporaryFile({name, extension} = {}) {
 	if (name) {
 		if (extension !== undefined && extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(tempyDirectory(), name);
+		return path.join(temporaryDirectory(), name);
 	}
 
 	return getPath() + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
 }
 
-export const tempyFileTask = async (callback, options) => runTask(tempyFile(options), callback);
+export const temporaryFileTask = async (callback, options) => runTask(temporaryFile(options), callback);
 
-export function tempyDirectory({prefix = ''} = {}) {
+export function temporaryDirectory({prefix = ''} = {}) {
 	const directory = getPath(prefix);
 	fs.mkdirSync(directory);
 	return directory;
 }
 
-export const tempyDirectoryTask = async (callback, options) => runTask(tempyDirectory(options), callback);
+export const temporaryDirectoryTask = async (callback, options) => runTask(temporaryDirectory(options), callback);
 
-export async function tempyWrite(fileContent, options) {
-	const filename = tempyFile(options);
+export async function temporaryWrite(fileContent, options) {
+	const filename = temporaryFile(options);
 	const write = isStream(fileContent) ? writeStream : fsPromises.writeFile;
 	await write(filename, fileContent);
 	return filename;
 }
 
-export const tempyWriteTask = async (fileContent, callback, options) => runTask(await tempyWrite(fileContent, options), callback);
+export const temporaryWriteTask = async (fileContent, callback, options) => runTask(await temporaryWrite(fileContent, options), callback);
 
-export function tempyWriteSync(fileContent, options) {
-	const filename = tempyFile(options);
+export function temporaryWriteSync(fileContent, options) {
+	const filename = temporaryFile(options);
 	fs.writeFileSync(filename, fileContent);
 	return filename;
 }
 
-export {default as tempyRoot} from 'temp-dir';
+export {default as temporaryRoot} from 'temp-dir';

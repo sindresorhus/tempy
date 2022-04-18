@@ -1,31 +1,31 @@
 import process from 'node:process';
 import {Buffer} from 'node:buffer';
 import {expectType, expectError} from 'tsd';
-import {tempyFile, tempyFileTask, tempyDirectory, tempyDirectoryTask, tempyWrite, tempyWriteTask, tempyWriteSync, tempyRoot, FileOptions} from './index.js';
+import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, temporaryRoot, FileOptions} from './index.js';
 
 const options: FileOptions = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
-expectType<string>(tempyDirectory());
-expectType<string>(tempyDirectory({prefix: 'name_'}));
-expectType<string>(tempyFile());
-expectType<Promise<void>>(tempyFileTask(temporaryFile => {
+expectType<string>(temporaryDirectory());
+expectType<string>(temporaryDirectory({prefix: 'name_'}));
+expectType<string>(temporaryFile());
+expectType<Promise<void>>(temporaryFileTask(temporaryFile => {
 	expectType<string>(temporaryFile);
 }));
-expectType<Promise<void>>(tempyDirectoryTask(temporaryDirectory => {
+expectType<Promise<void>>(temporaryDirectoryTask(temporaryDirectory => {
 	expectType<string>(temporaryDirectory);
 }));
-expectType<string>(tempyFile({extension: 'png'}));
-expectType<string>(tempyFile({name: 'afile.txt'}));
-expectError(tempyFile({extension: 'png', name: 'afile.txt'}));
-expectType<string>(tempyRoot);
+expectType<string>(temporaryFile({extension: 'png'}));
+expectType<string>(temporaryFile({name: 'afile.txt'}));
+expectError(temporaryFile({extension: 'png', name: 'afile.txt'}));
+expectType<string>(temporaryRoot);
 
-expectType<Promise<string>>(tempyWrite('unicorn'));
-expectType<Promise<string>>(tempyWrite('unicorn', {name: 'pony.png'}));
-expectType<Promise<string>>(tempyWrite(process.stdin, {name: 'pony.png'}));
-expectType<Promise<string>>(tempyWrite(Buffer.from('pony'), {name: 'pony.png'}));
-expectType<Promise<void>>(tempyWriteTask('', temporaryFile => {
+expectType<Promise<string>>(temporaryWrite('unicorn'));
+expectType<Promise<string>>(temporaryWrite('unicorn', {name: 'pony.png'}));
+expectType<Promise<string>>(temporaryWrite(process.stdin, {name: 'pony.png'}));
+expectType<Promise<string>>(temporaryWrite(Buffer.from('pony'), {name: 'pony.png'}));
+expectType<Promise<void>>(temporaryWriteTask('', temporaryFile => {
 	expectType<string>(temporaryFile);
 }));
 
-expectType<string>(tempyWriteSync('unicorn'));
-expectType<string>(tempyWriteSync(Buffer.from('unicorn')));
-expectType<string>(tempyWriteSync('unicorn', {name: 'pony.png'}));
+expectType<string>(temporaryWriteSync('unicorn'));
+expectType<string>(temporaryWriteSync(Buffer.from('unicorn')));
+expectType<string>(temporaryWriteSync('unicorn', {name: 'pony.png'}));
