@@ -153,4 +153,4 @@ temporaryWriteSync('🦄');
 */
 export function temporaryWriteSync(fileContent: string | Buffer | TypedArray | DataView, options?: FileOptions): string;
 
-export {default as temporaryRoot} from 'temp-dir';
+export {default as rootTemporaryDirectory} from 'temp-dir';

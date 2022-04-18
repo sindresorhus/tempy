@@ -1,7 +1,7 @@
 import process from 'node:process';
 import {Buffer} from 'node:buffer';
 import {expectType, expectError} from 'tsd';
-import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, temporaryRoot, FileOptions} from './index.js';
+import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, rootTemporaryDirectory, FileOptions} from './index.js';
 
 const options: FileOptions = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
 expectType<string>(temporaryDirectory());
@@ -16,7 +16,7 @@ expectType<Promise<void>>(temporaryDirectoryTask(temporaryDirectory => {
 expectType<string>(temporaryFile({extension: 'png'}));
 expectType<string>(temporaryFile({name: 'afile.txt'}));
 expectError(temporaryFile({extension: 'png', name: 'afile.txt'}));
-expectType<string>(temporaryRoot);
+expectType<string>(rootTemporaryDirectory);
 
 expectType<Promise<string>>(temporaryWrite('unicorn'));
 expectType<Promise<string>>(temporaryWrite('unicorn', {name: 'pony.png'}));

@@ -57,4 +57,4 @@ export function temporaryWriteSync(fileContent, options) {
 	return filename;
 }
 
-export {default as temporaryRoot} from 'temp-dir';
+export {default as rootTemporaryDirectory} from 'temp-dir';

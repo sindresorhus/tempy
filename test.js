@@ -6,7 +6,7 @@ import tempDir from 'temp-dir';
 import {pathExists} from 'path-exists';
 import touch from 'touch';
 import test from 'ava';
-import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, temporaryRoot} from './index.js';
+import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, rootTemporaryDirectory} from './index.js';
 
 test('.file()', t => {
 	t.true(temporaryFile().includes(tempDir));
@@ -128,6 +128,6 @@ test('.writeSync()', t => {
 });
 
 test('.root', t => {
-	t.true(temporaryRoot.length > 0);
-	t.true(path.isAbsolute(temporaryRoot));
+	t.true(rootTemporaryDirectory.length > 0);
+	t.true(path.isAbsolute(rootTemporaryDirectory));
 });
