@@ -4,8 +4,8 @@
 
 ## Install
 
-```
-$ npm install tempy
+```sh
+npm install tempy
 ```
 
 ## Usage

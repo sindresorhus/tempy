@@ -1,4 +1,5 @@
-import fs, {promises as fsPromises} from 'node:fs';
+import fs from 'node:fs';
+import fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import stream from 'node:stream';
 import {promisify} from 'node:util';

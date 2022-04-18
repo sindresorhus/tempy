@@ -1,7 +1,17 @@
 import process from 'node:process';
 import {Buffer} from 'node:buffer';
 import {expectType, expectError} from 'tsd';
-import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, rootTemporaryDirectory, FileOptions} from './index.js';
+import {
+	temporaryFile,
+	temporaryFileTask,
+	temporaryDirectory,
+	temporaryDirectoryTask,
+	temporaryWrite,
+	temporaryWriteTask,
+	temporaryWriteSync,
+	rootTemporaryDirectory,
+	FileOptions,
+} from './index.js';
 
 const options: FileOptions = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
 expectType<string>(temporaryDirectory());

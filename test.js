@@ -6,7 +6,16 @@ import tempDir from 'temp-dir';
 import {pathExists} from 'path-exists';
 import touch from 'touch';
 import test from 'ava';
-import {temporaryFile, temporaryFileTask, temporaryDirectory, temporaryDirectoryTask, temporaryWrite, temporaryWriteTask, temporaryWriteSync, rootTemporaryDirectory} from './index.js';
+import {
+	temporaryFile,
+	temporaryFileTask,
+	temporaryDirectory,
+	temporaryDirectoryTask,
+	temporaryWrite,
+	temporaryWriteTask,
+	temporaryWriteSync,
+	rootTemporaryDirectory,
+} from './index.js';
 
 test('.file()', t => {
 	t.true(temporaryFile().includes(tempDir));
