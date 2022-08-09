@@ -37,7 +37,7 @@ export const temporaryFileTask = async (callback, options) => runTask(temporaryF
 
 export function temporaryDirectory({prefix = ''} = {}) {
 	const directory = getPath(prefix);
-	fs.mkdirSync(directory);
+	fs.mkdirSync(directory, {recursive: true});
 	return directory;
 }
 
