@@ -68,10 +68,16 @@ test('.task() - cleans up even if callback throws', async t => {
 });
 
 test('.directory()', t => {
-	const prefix = 'name_';
+	let prefix = 'name_';
 
 	t.true(temporaryDirectory().includes(tempDir));
 	t.true(path.basename(temporaryDirectory({prefix})).startsWith(prefix));
+
+	prefix = path.join('parent', 'name_');
+
+	t.true(temporaryDirectory().includes(tempDir));
+	t.true(path.basename(temporaryDirectory({prefix})).startsWith(prefix.split(path.sep)[1]));
+	t.true(path.dirname(temporaryDirectory({prefix})).split(path.sep).pop() === (prefix.split(path.sep)[0]));
 });
 
 test('.directory.task()', async t => {
