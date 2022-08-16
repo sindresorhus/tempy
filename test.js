@@ -77,7 +77,7 @@ test('.directory()', t => {
 
 	t.true(temporaryDirectory().includes(tempDir));
 	t.true(path.basename(temporaryDirectory({prefix})).startsWith(prefix.split(path.sep)[1]));
-	t.true(path.dirname(temporaryDirectory({prefix})).split(path.sep).pop() === (prefix.split(path.sep)[0]));
+	t.true(path.dirname(temporaryDirectory({prefix})).split(path.sep).pop() === prefix.split(path.sep)[0]);
 });
 
 test('.directory.task()', async t => {
