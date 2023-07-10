@@ -38,16 +38,21 @@
 	],
 	"dependencies": {
 		"is-stream": "^3.0.0",
-		"temp-dir": "^2.0.0",
+		"temp-dir": "^3.0.0",
 		"type-fest": "^2.12.2",
 		"unique-string": "^3.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.24",
-		"ava": "^4.2.0",
+		"@types/node": "^20.4.1",
+		"ava": "^5.3.1",
 		"path-exists": "^5.0.0",
 		"touch": "^3.1.0",
-		"tsd": "^0.20.0",
-		"xo": "^0.48.0"
+		"tsd": "^0.28.1",
+		"xo": "^0.54.2"
+	},
+	"xo": {
+		"rules": {
+			"@typescript-eslint/no-redundant-type-constituents": "off"
+		}
 	}
 }

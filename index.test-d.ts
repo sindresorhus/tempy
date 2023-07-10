@@ -10,10 +10,10 @@ import {
 	temporaryWriteTask,
 	temporaryWriteSync,
 	rootTemporaryDirectory,
-	FileOptions,
+	type FileOptions,
 } from './index.js';
 
-const options: FileOptions = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
+const options: FileOptions = {};
 expectType<string>(temporaryDirectory());
 expectType<string>(temporaryDirectory({prefix: 'name_'}));
 expectType<string>(temporaryFile());

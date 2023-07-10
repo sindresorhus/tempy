@@ -1,5 +1,5 @@
-import {Buffer} from 'node:buffer';
-import {MergeExclusive, TypedArray} from 'type-fest';
+import {type Buffer} from 'node:buffer';
+import {type MergeExclusive, type TypedArray} from 'type-fest';
 
 export type FileOptions = MergeExclusive<
 {
