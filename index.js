@@ -17,7 +17,7 @@ async function runTask(temporaryPath, callback) {
 	try {
 		return await callback(temporaryPath);
 	} finally {
-		await fsPromises.rm(temporaryPath, {recursive: true, force: true});
+		await fsPromises.rm(temporaryPath, {recursive: true, force: true, maxRetries: 2});
 	}
 }
 
