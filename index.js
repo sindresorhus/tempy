@@ -9,7 +9,8 @@ import {isStream} from 'is-stream';
 
 const pipeline = promisify(stream.pipeline); // TODO: Use `node:stream/promises` when targeting Node.js 16.
 
-const getPath = (prefix = '') => path.join(tempDir, prefix + uniqueString());
+// Use `path.basename()` to prevent path traversal.
+const getPath = (prefix = '') => path.join(tempDir, path.basename(prefix) + uniqueString());
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
@@ -27,10 +28,12 @@ export function temporaryFile({name, extension} = {}) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		return path.join(temporaryDirectory(), name);
+		// Use `path.basename()` to prevent path traversal.
+		return path.join(temporaryDirectory(), path.basename(name));
 	}
 
-	return getPath() + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
+	// Use `path.basename()` to prevent path traversal.
+	return getPath() + (extension === undefined || extension === null ? '' : '.' + path.basename(extension).replace(/^\./, ''));
 }
 
 export const temporaryFileTask = async (callback, options) => runTask(temporaryFile(options), callback);

@@ -140,3 +140,9 @@ test('.root', t => {
 	t.true(rootTemporaryDirectory.length > 0);
 	t.true(path.isAbsolute(rootTemporaryDirectory));
 });
+
+test('path traversal prevention', t => {
+	t.true(temporaryFile({name: '../../../test'}).includes(tempDir));
+	t.true(temporaryFile({extension: '../../../test'}).includes(tempDir));
+	t.true(temporaryDirectory({prefix: '../../../test'}).includes(tempDir));
+});
