@@ -141,8 +141,32 @@ test('.root', t => {
 	t.true(path.isAbsolute(rootTemporaryDirectory));
 });
 
-test('path traversal prevention', t => {
-	t.true(temporaryFile({name: '../../../test'}).includes(tempDir));
-	t.true(temporaryFile({extension: '../../../test'}).includes(tempDir));
-	t.true(temporaryDirectory({prefix: '../../../test'}).includes(tempDir));
+// TODO: Use `unsafeFilenameFixtures` from `is-safe-filename` when targeting Node.js 20.
+const unsafeFilenameFixtures = [
+	'',
+	'   ',
+	'.',
+	'..',
+	' .',
+	'. ',
+	' ..',
+	'.. ',
+	'../',
+	'../foo',
+	'foo/../bar',
+	'foo/bar',
+	'foo\\bar',
+	'foo\0bar',
+];
+
+test('rejects unsafe path components', t => {
+	for (const fixture of unsafeFilenameFixtures) {
+		t.throws(() => temporaryFile({name: fixture}), {message: /Unsafe path component/});
+		t.throws(() => temporaryFile({extension: fixture}), {message: /Unsafe path component/});
+
+		// Empty string is valid for prefix (it's the default)
+		if (fixture !== '') {
+			t.throws(() => temporaryDirectory({prefix: fixture}), {message: /Unsafe path component/});
+		}
+	}
 });

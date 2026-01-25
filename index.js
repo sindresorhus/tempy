@@ -9,8 +9,33 @@ import {isStream} from 'is-stream';
 
 const pipeline = promisify(stream.pipeline); // TODO: Use `node:stream/promises` when targeting Node.js 16.
 
-// Use `path.basename()` to prevent path traversal.
-const getPath = (prefix = '') => path.join(tempDir, path.basename(prefix) + uniqueString());
+// TODO: Use `is-safe-filename` when targeting Node.js 20.
+function assertSafePathComponent(pathComponent) {
+	if (typeof pathComponent !== 'string') {
+		throw new TypeError(`Expected a string, got ${typeof pathComponent}`);
+	}
+
+	const trimmed = pathComponent.trim();
+
+	const isSafe = trimmed !== ''
+		&& trimmed !== '.'
+		&& trimmed !== '..'
+		&& !pathComponent.includes('/')
+		&& !pathComponent.includes('\\')
+		&& !pathComponent.includes('\0');
+
+	if (!isSafe) {
+		throw new Error(`Unsafe path component: ${JSON.stringify(pathComponent)}`);
+	}
+}
+
+const getPath = (prefix = '') => {
+	if (prefix) {
+		assertSafePathComponent(prefix);
+	}
+
+	return path.join(tempDir, prefix + uniqueString());
+};
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
 
@@ -23,17 +48,21 @@ async function runTask(temporaryPath, callback) {
 }
 
 export function temporaryFile({name, extension} = {}) {
-	if (name) {
+	if (name !== undefined && name !== null) {
 		if (extension !== undefined && extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
 		}
 
-		// Use `path.basename()` to prevent path traversal.
-		return path.join(temporaryDirectory(), path.basename(name));
+		assertSafePathComponent(name);
+
+		return path.join(temporaryDirectory(), name);
 	}
 
-	// Use `path.basename()` to prevent path traversal.
-	return getPath() + (extension === undefined || extension === null ? '' : '.' + path.basename(extension).replace(/^\./, ''));
+	if (extension !== undefined && extension !== null) {
+		assertSafePathComponent(extension);
+	}
+
+	return getPath() + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
 }
 
 export const temporaryFileTask = async (callback, options) => runTask(temporaryFile(options), callback);
