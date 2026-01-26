@@ -89,7 +89,7 @@ import {temporaryDirectory} from 'tempy';
 temporaryDirectory();
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 
-temporaryDirectory({prefix: 'a'});
+temporaryDirectory({prefix: 'name'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/name_3c085674ad31223b9653c88f725d6b41'
 ```
 */
