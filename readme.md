@@ -80,6 +80,23 @@ temporaryFile({parentDirectory: 'my-app'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/my-app/4f504b9edb5ba0e89451617bf9f971dd'
 ```
 
+##### rootDirectory
+
+Type: `string`
+
+An absolute path to use as the base directory for temporary files, instead of the OS temporary directory.
+
+*You usually won't need this option. Prefer the `parentDirectory` option instead.*
+
+Useful for niche use-cases like different filesystem mounts or journaling filesystems. The directory is created automatically if it doesn't exist.
+
+```js
+import {temporaryFile} from 'tempy';
+
+temporaryFile({rootDirectory: '/mnt/fast-storage/tmp'});
+//=> '/mnt/fast-storage/tmp/4f504b9edb5ba0e89451617bf9f971dd'
+```
+
 ### temporaryDirectory(options?)
 
 Get a temporary directory path. The directory is created for you.
@@ -121,6 +138,23 @@ import {temporaryDirectory} from 'tempy';
 
 temporaryDirectory({parentDirectory: 'my-app'});
 //=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/my-app/4f504b9edb5ba0e89451617bf9f971dd'
+```
+
+##### rootDirectory
+
+Type: `string`
+
+An absolute path to use as the base directory for temporary directories, instead of the OS temporary directory.
+
+*You usually won't need this option. Prefer the `parentDirectory` option instead.*
+
+Useful for niche use-cases like different filesystem mounts or journaling filesystems. The directory is created automatically if it doesn't exist.
+
+```js
+import {temporaryDirectory} from 'tempy';
+
+temporaryDirectory({rootDirectory: '/mnt/fast-storage/tmp'});
+//=> '/mnt/fast-storage/tmp/2f3d094aec2cb1b93bb0f4cffce5ebd6'
 ```
 
 ### temporaryWrite(fileContent, options?)

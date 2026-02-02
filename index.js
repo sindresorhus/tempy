@@ -29,21 +29,32 @@ function assertSafePathComponent(pathComponent) {
 	}
 }
 
-function resolveParentDirectory(parentDirectory) {
+function resolveParentDirectory(parentDirectory, rootDirectory) {
 	assertSafePathComponent(parentDirectory);
 
-	const resolved = path.join(tempDir, parentDirectory);
+	const base = rootDirectory ?? tempDir;
+	const resolved = path.join(base, parentDirectory);
 	fs.mkdirSync(resolved, {recursive: true});
 
 	return resolved;
 }
 
-const getPath = (prefix = '', parentDirectory) => {
+const getPath = (prefix = '', {parentDirectory, rootDirectory} = {}) => {
 	if (prefix) {
 		assertSafePathComponent(prefix);
 	}
 
-	const parent = parentDirectory ? resolveParentDirectory(parentDirectory) : tempDir;
+	if (rootDirectory !== undefined) {
+		if (!path.isAbsolute(rootDirectory)) {
+			throw new Error('The `rootDirectory` option must be an absolute path');
+		}
+
+		fs.mkdirSync(rootDirectory, {recursive: true});
+	}
+
+	const parent = parentDirectory
+		? resolveParentDirectory(parentDirectory, rootDirectory)
+		: (rootDirectory ?? tempDir);
 
 	return path.join(parent, prefix + uniqueString());
 };
@@ -58,7 +69,7 @@ async function runTask(temporaryPath, callback) {
 	}
 }
 
-export function temporaryFile({name, extension, parentDirectory} = {}) {
+export function temporaryFile({name, extension, parentDirectory, rootDirectory} = {}) {
 	if (name !== undefined && name !== null) {
 		if (extension !== undefined && extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
@@ -66,20 +77,20 @@ export function temporaryFile({name, extension, parentDirectory} = {}) {
 
 		assertSafePathComponent(name);
 
-		return path.join(temporaryDirectory({parentDirectory}), name);
+		return path.join(temporaryDirectory({parentDirectory, rootDirectory}), name);
 	}
 
 	if (extension !== undefined && extension !== null) {
 		assertSafePathComponent(extension);
 	}
 
-	return getPath('', parentDirectory) + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
+	return getPath('', {parentDirectory, rootDirectory}) + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
 }
 
 export const temporaryFileTask = async (callback, options) => runTask(temporaryFile(options), callback);
 
-export function temporaryDirectory({prefix = '', parentDirectory} = {}) {
-	const directory = getPath(prefix, parentDirectory);
+export function temporaryDirectory({prefix = '', parentDirectory, rootDirectory} = {}) {
+	const directory = getPath(prefix, {parentDirectory, rootDirectory});
 	fs.mkdirSync(directory, {recursive: true});
 	return directory;
 }

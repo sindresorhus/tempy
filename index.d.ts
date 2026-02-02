@@ -18,6 +18,25 @@ export type BaseOptions = {
 	```
 	*/
 	readonly parentDirectory?: string;
+
+	/**
+	An absolute path to use as the base directory for temporary files and directories, instead of the OS temporary directory.
+
+	_You usually won't need this option. Prefer the `parentDirectory` option instead._
+
+	This is useful for niche use-cases like different filesystem mounts or journaling filesystems.
+
+	The directory is created automatically if it doesn't exist.
+
+	@example
+	```
+	import {temporaryFile} from 'tempy';
+
+	temporaryFile({rootDirectory: '/mnt/fast-storage/tmp'});
+	//=> '/mnt/fast-storage/tmp/4f504b9edb5ba0e89451617bf9f971dd'
+	```
+	*/
+	readonly rootDirectory?: string;
 };
 
 export type FileOptions = MergeExclusive<

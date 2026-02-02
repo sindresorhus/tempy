@@ -196,6 +196,70 @@ test('.file() with parentDirectory - rejects unsafe values', t => {
 	}
 });
 
+test('.file() with rootDirectory', t => {
+	const rootDirectory = path.join(tempDir, `root-test-${Date.now()}`);
+	const filePath = temporaryFile({rootDirectory});
+	t.true(filePath.startsWith(rootDirectory));
+	t.true(fs.existsSync(rootDirectory));
+});
+
+test('.file() with rootDirectory and parentDirectory', t => {
+	const rootDirectory = path.join(tempDir, `root-parent-test-${Date.now()}`);
+	const filePath = temporaryFile({rootDirectory, parentDirectory: 'my-app'});
+	t.true(filePath.startsWith(path.join(rootDirectory, 'my-app')));
+});
+
+test('.file() with rootDirectory and extension', t => {
+	const rootDirectory = path.join(tempDir, `root-ext-test-${Date.now()}`);
+	const filePath = temporaryFile({rootDirectory, extension: 'png'});
+	t.true(filePath.startsWith(rootDirectory));
+	t.true(filePath.endsWith('.png'));
+});
+
+test('.file() with rootDirectory and name', t => {
+	const rootDirectory = path.join(tempDir, `root-name-test-${Date.now()}`);
+	const filePath = temporaryFile({rootDirectory, name: 'unicorn.png'});
+	t.true(filePath.startsWith(rootDirectory));
+	t.is(path.basename(filePath), 'unicorn.png');
+});
+
+test('.directory() with rootDirectory', t => {
+	const rootDirectory = path.join(tempDir, `root-dir-test-${Date.now()}`);
+	const directory = temporaryDirectory({rootDirectory});
+	t.true(directory.startsWith(rootDirectory));
+	t.true(fs.statSync(directory).isDirectory());
+});
+
+test('.file() with rootDirectory - rejects relative paths', t => {
+	t.throws(() => temporaryFile({rootDirectory: 'relative/path'}), {
+		message: /must be an absolute path/,
+	});
+});
+
+test('.write() with rootDirectory', async t => {
+	const rootDirectory = path.join(tempDir, `root-write-test-${Date.now()}`);
+	const filePath = await temporaryWrite('unicorn', {rootDirectory});
+	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
+	t.true(filePath.startsWith(rootDirectory));
+});
+
+test('.writeSync() with rootDirectory', t => {
+	const rootDirectory = path.join(tempDir, `root-write-sync-test-${Date.now()}`);
+	const filePath = temporaryWriteSync('unicorn', {rootDirectory});
+	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
+	t.true(filePath.startsWith(rootDirectory));
+});
+
+test('.directory.task() with rootDirectory cleans up', async t => {
+	const rootDirectory = path.join(tempDir, `root-task-test-${Date.now()}`);
+	let temporaryDirectoryPath;
+	await temporaryDirectoryTask(async temporaryDirectory => {
+		temporaryDirectoryPath = temporaryDirectory;
+		t.true(temporaryDirectory.startsWith(rootDirectory));
+	}, {rootDirectory});
+	t.false(await pathExists(temporaryDirectoryPath));
+});
+
 // TODO: Use `unsafeFilenameFixtures` from `is-safe-filename` when targeting Node.js 20.
 const unsafeFilenameFixtures = [
 	'',
