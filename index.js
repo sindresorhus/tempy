@@ -29,12 +29,23 @@ function assertSafePathComponent(pathComponent) {
 	}
 }
 
-const getPath = (prefix = '') => {
+function resolveParentDirectory(parentDirectory) {
+	assertSafePathComponent(parentDirectory);
+
+	const resolved = path.join(tempDir, parentDirectory);
+	fs.mkdirSync(resolved, {recursive: true});
+
+	return resolved;
+}
+
+const getPath = (prefix = '', parentDirectory) => {
 	if (prefix) {
 		assertSafePathComponent(prefix);
 	}
 
-	return path.join(tempDir, prefix + uniqueString());
+	const parent = parentDirectory ? resolveParentDirectory(parentDirectory) : tempDir;
+
+	return path.join(parent, prefix + uniqueString());
 };
 
 const writeStream = async (filePath, data) => pipeline(data, fs.createWriteStream(filePath));
@@ -47,7 +58,7 @@ async function runTask(temporaryPath, callback) {
 	}
 }
 
-export function temporaryFile({name, extension} = {}) {
+export function temporaryFile({name, extension, parentDirectory} = {}) {
 	if (name !== undefined && name !== null) {
 		if (extension !== undefined && extension !== null) {
 			throw new Error('The `name` and `extension` options are mutually exclusive');
@@ -55,21 +66,21 @@ export function temporaryFile({name, extension} = {}) {
 
 		assertSafePathComponent(name);
 
-		return path.join(temporaryDirectory(), name);
+		return path.join(temporaryDirectory({parentDirectory}), name);
 	}
 
 	if (extension !== undefined && extension !== null) {
 		assertSafePathComponent(extension);
 	}
 
-	return getPath() + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
+	return getPath('', parentDirectory) + (extension === undefined || extension === null ? '' : '.' + extension.replace(/^\./, ''));
 }
 
 export const temporaryFileTask = async (callback, options) => runTask(temporaryFile(options), callback);
 
-export function temporaryDirectory({prefix = ''} = {}) {
-	const directory = getPath(prefix);
-	fs.mkdirSync(directory);
+export function temporaryDirectory({prefix = '', parentDirectory} = {}) {
+	const directory = getPath(prefix, parentDirectory);
+	fs.mkdirSync(directory, {recursive: true});
 	return directory;
 }
 

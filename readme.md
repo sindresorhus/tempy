@@ -63,6 +63,23 @@ Type: `string`
 
 Filename. Mutually exclusive with the `extension` option.
 
+##### parentDirectory
+
+Type: `string`
+
+The name of a directory inside the OS temporary directory to create the temporary file in. The directory is created automatically if it doesn't exist.
+
+By default, the temporary file is created directly inside the OS temporary directory. This option lets you group related temporary files into a subdirectory.
+
+Useful for organizing temporary files by app or task, making cleanup and debugging easier.
+
+```js
+import {temporaryFile} from 'tempy';
+
+temporaryFile({parentDirectory: 'my-app'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/my-app/4f504b9edb5ba0e89451617bf9f971dd'
+```
+
 ### temporaryDirectory(options?)
 
 Get a temporary directory path. The directory is created for you.
@@ -90,6 +107,21 @@ Directory prefix.
 Useful for testing by making it easier to identify cache directories that are created.
 
 *You usually won't need this option. Specify it only when actually needed.*
+
+##### parentDirectory
+
+Type: `string`
+
+The name of a directory inside the OS temporary directory to create the temporary directory in. The directory is created automatically if it doesn't exist.
+
+By default, the temporary directory is created directly inside the OS temporary directory. This option lets you group related temporary directories into a subdirectory.
+
+```js
+import {temporaryDirectory} from 'tempy';
+
+temporaryDirectory({parentDirectory: 'my-app'});
+//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/my-app/4f504b9edb5ba0e89451617bf9f971dd'
+```
 
 ### temporaryWrite(fileContent, options?)
 

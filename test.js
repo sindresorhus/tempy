@@ -141,6 +141,61 @@ test('.root', t => {
 	t.true(path.isAbsolute(rootTemporaryDirectory));
 });
 
+test('.file() with parentDirectory', t => {
+	const filePath = temporaryFile({parentDirectory: 'my-app'});
+	t.true(filePath.includes(path.join(tempDir, 'my-app')));
+});
+
+test('.file() with parentDirectory and extension', t => {
+	const filePath = temporaryFile({parentDirectory: 'my-app', extension: 'png'});
+	t.true(filePath.includes(path.join(tempDir, 'my-app')));
+	t.true(filePath.endsWith('.png'));
+});
+
+test('.file() with parentDirectory and name', t => {
+	const filePath = temporaryFile({parentDirectory: 'my-app', name: 'unicorn.png'});
+	t.true(filePath.includes(path.join(tempDir, 'my-app')));
+	t.is(path.basename(filePath), 'unicorn.png');
+});
+
+test('.directory() with parentDirectory', t => {
+	const directory = temporaryDirectory({parentDirectory: 'my-app'});
+	t.true(directory.includes(path.join(tempDir, 'my-app')));
+	t.true(fs.statSync(directory).isDirectory());
+});
+
+test('.directory() with parentDirectory and prefix', t => {
+	const directory = temporaryDirectory({parentDirectory: 'my-app', prefix: 'name_'});
+	t.true(directory.includes(path.join(tempDir, 'my-app')));
+	t.true(path.basename(directory).startsWith('name_'));
+});
+
+test('.file() with parentDirectory - auto-creates the directory', t => {
+	const parentDirectory = `auto-create-name-${Date.now()}`;
+	const filePath = temporaryFile({parentDirectory, name: 'test.txt'});
+	t.true(fs.existsSync(path.dirname(filePath)));
+});
+
+test('.file() with parentDirectory and extension - auto-creates the directory', t => {
+	const parentDirectory = `auto-create-ext-${Date.now()}`;
+	const filePath = temporaryFile({parentDirectory, extension: 'png'});
+	t.true(fs.existsSync(path.dirname(filePath)));
+	t.true(filePath.endsWith('.png'));
+});
+
+test('.write() with parentDirectory', async t => {
+	const parentDirectory = `auto-create-write-${Date.now()}`;
+	const filePath = await temporaryWrite('unicorn', {parentDirectory});
+	t.is(fs.readFileSync(filePath, 'utf8'), 'unicorn');
+	t.true(filePath.includes(path.join(tempDir, parentDirectory)));
+});
+
+test('.file() with parentDirectory - rejects unsafe values', t => {
+	for (const fixture of ['..', '../foo', 'foo/bar', 'foo\\bar', 'foo\0bar']) {
+		t.throws(() => temporaryFile({parentDirectory: fixture}), {message: /Unsafe path component/});
+	}
+});
+
 // TODO: Use `unsafeFilenameFixtures` from `is-safe-filename` when targeting Node.js 20.
 const unsafeFilenameFixtures = [
 	'',

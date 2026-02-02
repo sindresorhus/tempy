@@ -1,6 +1,25 @@
 import {type Buffer} from 'node:buffer';
 import {type MergeExclusive, type TypedArray} from 'type-fest';
 
+export type BaseOptions = {
+	/**
+	The name of a directory inside the OS temporary directory to create the temporary file or directory in. The directory is created automatically if it doesn't exist.
+
+	By default, temporary files and directories are created directly inside the OS temporary directory. This option lets you group related temporary files into a subdirectory.
+
+	Useful for organizing temporary files by app or task, making cleanup and debugging easier.
+
+	@example
+	```
+	import {temporaryFile} from 'tempy';
+
+	temporaryFile({parentDirectory: 'my-app'});
+	//=> '/private/var/folders/3x/jf5977fn79jbglr7rk0tq4d00000gn/T/my-app/4f504b9edb5ba0e89451617bf9f971dd'
+	```
+	*/
+	readonly parentDirectory?: string;
+};
+
 export type FileOptions = MergeExclusive<
 {
 	/**
@@ -22,7 +41,7 @@ export type FileOptions = MergeExclusive<
 	*/
 	readonly name?: string;
 }
->;
+> & BaseOptions;
 
 export type DirectoryOptions = {
 	/**
@@ -33,7 +52,7 @@ export type DirectoryOptions = {
 	Useful for testing by making it easier to identify cache directories that are created.
 	*/
 	readonly prefix?: string;
-};
+} & BaseOptions;
 
 /**
 The temporary path created by the function. Can be asynchronous.
