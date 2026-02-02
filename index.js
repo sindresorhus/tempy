@@ -65,7 +65,8 @@ async function runTask(temporaryPath, callback) {
 	try {
 		return await callback(temporaryPath);
 	} finally {
-		await fsPromises.rm(temporaryPath, {recursive: true, force: true, maxRetries: 2});
+		// Retry to handle EBUSY/EPERM on Windows (antivirus, indexing, CI).
+		await fsPromises.rm(temporaryPath, {recursive: true, force: true, maxRetries: 10, retryDelay: 100});
 	}
 }
 
